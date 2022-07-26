@@ -6,16 +6,15 @@
 // Set your brand colors
 $yale-blue: #00356B;
 $white: #FFFFFF;
-$green: #00D632;
+$accent-green: #00D632;
 $beige-light: #D0D1CD;
 $beige-lighter: #EFF0EB;
 
 // Update Bulma's global variables
 $family-sans-serif: "Rubik", sans-serif;
-$grey-dark: $brown;
-$grey-light: $beige-light;
 $primary: $yale-blue;
-$link: $pink;
+$accent: $accent-green;
+$secondary: $white;
 $widescreen-enabled: false;
 $fullhd-enabled: false;
 

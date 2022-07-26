@@ -6,6 +6,8 @@ const POSTS_URL = "http://127.0.0.1:3000/posts";
 
 // DOM Elements
 const mainArea = document.querySelector("main")
+const navBar = document.querySelector("nav")
+const writePost = navBar.querySelector("#write-post")
 
 
 fetch(POSTS_URL)
@@ -25,4 +27,8 @@ function displayPost(post) {
 
     mainArea.appendChild(postCard)
 };
+
+writePost.addEventListener("click", event => {
+    console.log(event.target.parentNode)
+}); 
 
