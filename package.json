@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "css-build": "node-sass --omit-source-map-url sass/mystyles.scss css/mystyles.css",
+    "css-watch": "npm run css-build -- --watch",
+    "start": "npm run css-watch"
+  },
+  
+  "name": "mybulma",
+  "version": "1.0.0",
+  "main": "sass/mystyles.scss",
+  "license": "MIT",
+  "devDependencies": {
+    "bulma": "^0.7.2",
+    "node-sass": "^4.9.2"
+  }
+}
+
