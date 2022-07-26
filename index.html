@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/mystyles.css">
   </head>
   <body>
+    <script defer src="./src/index.js"></script>
     <nav class="navbar is-primary has-shadow is-spaced" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="file:///Users/markviti/Development/code/Phase-3/Yalies4Yalies/y4yFrontend/index.html">
@@ -23,45 +24,48 @@
     
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-          <a class="navbar-item">
-            Home
-          </a>
-    
-          <a class="navbar-item">
-            Documentation
-          </a>
-    
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
-              More
+              Subjects
             </a>
-    
-            <div class="navbar-dropdown">
-              <a class="navbar-item">
-                About
-              </a>
-              <a class="navbar-item">
-                Jobs
-              </a>
-              <a class="navbar-item">
-                Contact
-              </a>
-              <hr class="navbar-divider">
-              <a class="navbar-item">
-                Report an issue
-              </a>
-            </div>
-          </div>
-        </div>
-    
-        
+              <div class="navbar-dropdown">
+                <a class="navbar-item">
+                  Math
+                </a>
+                <a class="navbar-item">
+                  Economics
+                </a>
+                <a class="navbar-item">
+                  Biology
+                </a>
+                <a class="navbar-item">
+                  Chemistry
+                </a>
+                <a class="navbar-item">
+                  Social Sciences
+                </a>
+                <a class="navbar-item">
+                  Humanities
+                </a>
+                <hr class="navbar-divider">
+                <a class="navbar-item">
+                  Report an issue
+                </a>
+              </div>
           </div>
           <div class="navbar-item">
+            <div class = "buttons">
+              <button class ="button is-danger"><strong>Personal</strong></button>
+            </div>
+        </div>
+      </div>
+      
+          <div class="navbar-item">
             <div class="buttons">
-              <button class= "button is-accent is-light is-medium" id = "write-post">
-                <strong>Write Post</strong>
+              <button class="button is-success is-large modal-button" data-target="modal-ter" aria-haspopup="true">
+                Launch card modal
               </button>
-              <button class="button is-secondary">
+              <button class="button is-danger">
                 <strong>Sign up</strong>
               </button>
               <button class="button is-light">
@@ -80,6 +84,7 @@
       </h2>
     <main>
     </main>
-    <script defer src="./src/index.js"></script>
+
   </body>
 </html>
+
