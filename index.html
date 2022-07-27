@@ -86,9 +86,25 @@
     <div class = "modal"> 
       <div class = "modal-background"></div>
       <div class ="modal-content has-background-white py-5 px-5">
-        <h3 class = "title mb-6">
-          Hi mom
-        </h3>
+        <form id="new-post">
+          <h3>Write Post</h3>
+          <div>
+            <input class = "input is-primary is-medium is-rounded" type="text" name="title"  id="new-title"/>
+          </div>
+
+          <div>
+            <textarea class = "text-area is-large is-primary" placeholder = "Ask Yalies Here!"name="new-content" id="new-content"></textarea>
+          </div>
+
+          <div>
+            <label for="image">Image: </label>
+            <input type="text" name="image" id="new-image"/>
+          </div>
+          
+          <input type="submit" value="Create" />
+
+
+        </form>
       </div>
     </div>
 

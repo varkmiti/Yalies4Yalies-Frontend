@@ -9,6 +9,7 @@ const mainArea = document.querySelector("#main")
 const navBar = document.querySelector("nav")
 const buttonWriteWindow = navBar.querySelector("#write-window-button")
 const writeWindow = document.querySelector(".modal")
+const newPostForm = writeWindow.querySelector("#new-post")
 
 fetch(POSTS_URL)
 .then(res => res.json())
@@ -21,10 +22,10 @@ function displayAllPosts(postArray) {
 function displayPost(post) {
     let postCard = document.createElement("div");
     postCard.dataset.id = post.id;
-    postCard.classList.add("card")
+    postCard.classList.add("container")
+    postCard.classList.add("is-fluid")
     postCard.innerHTML = `
-
-                    <div class="card-content">
+                    <div class= "has-background-primary-light">
                         <div class="media">
                             <div class="media-left">
                                 <figure class="image is-48x48">
@@ -53,11 +54,19 @@ function displayPost(post) {
                         </footer>
                     </div>`
 
-    mainArea.appendChild(postCard)
+    mainArea.prepend(postCard)
 };
 
 buttonWriteWindow.addEventListener("click", event => {
     console.log("I hate life")
     writeWindow.classList.add("is-active")
     
+});
+
+newPostForm.addEventListener("submit", event =>{
+    event.preventDefault()
+    console.log(event.target)
+    console.log(event.target.querySelector("#new-title").value)
+    let newPostData = {title: `${event.target.querySelector("#new-title").value}`, content: `${event.target.querySelector("#new-content").value}`}
+    displayPost(newPostData)
 });
