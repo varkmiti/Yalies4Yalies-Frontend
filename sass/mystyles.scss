@@ -7,14 +7,15 @@
 $yale-blue: #00356B;
 $white: #FFFFFF;
 $accent-green: #00D632;
+$danger-hardcode: #ff3860;
 $beige-light: #D0D1CD;
 $beige-lighter: #EFF0EB;
 
 // Update Bulma's global variables
 $family-sans-serif: "Rubik", sans-serif;
 $primary: $yale-blue;
-$accent: $accent-green;
 $secondary: $white;
+$link: $danger-hardcode;
 $widescreen-enabled: false;
 $fullhd-enabled: false;
 

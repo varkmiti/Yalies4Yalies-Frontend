@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="css/mystyles.css">
   </head>
   <body>
-    <script defer src="./src/index.js"></script>
+    
+    
     <nav class="navbar is-primary has-shadow is-spaced" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="file:///Users/markviti/Development/code/Phase-3/Yalies4Yalies/y4yFrontend/index.html">
@@ -67,29 +68,31 @@
       
           <div class="navbar-item">
             <div class="buttons">
-              <button class="button is-success is-large modal-button" data-target="modal-ter" aria-haspopup="true">
-                Launch card modal
+              <button id = "write-window-button" class="button is-success is-large modal-button" data-target="modal-ter" aria-haspopup="true">
+                Write Post
               </button>
-              <button class="button is-danger">
+              <button class="button is-danger is-large">
                 <strong>Sign up</strong>
-              </button>
-              <button class="button is-light">
-                Log in
               </button>
             </div>
           </div>
         </div>
       </div>
     </nav>
-      <h1 class = "title">
-        Posts
-      </h2>
-      <h2 class = "subtitle">
-        Find Help. Be Help.
-      </h2>
-    <main>
-    </main>
+    <div id = "main">
+    </div>
 
+    <!-- Modal -->
+    <div class = "modal"> 
+      <div class = "modal-background"></div>
+      <div class ="modal-content has-background-white py-5 px-5">
+        <h3 class = "title mb-6">
+          Hi mom
+        </h3>
+      </div>
+    </div>
+
+    <script defer src="./src/index.js" src="https://apis.google.com/js/platform.js" async defer></script>
   </body>
 </html>
 
