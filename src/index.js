@@ -1,15 +1,15 @@
-// Bulma formatting
-// require('./sass/mystyles.scss');
 
 // URLs
 const POSTS_URL = "http://127.0.0.1:3000/posts";
 
 // DOM Elements
-const mainArea = document.querySelector("#main")
-const navBar = document.querySelector("nav")
-const buttonWriteWindow = navBar.querySelector("#write-window-button")
-const writeWindow = document.querySelector(".modal")
-const newPostForm = writeWindow.querySelector("#new-post")
+const mainArea = document.querySelector("#main");
+const navBar = document.querySelector("nav");
+const buttonWriteWindow = navBar.querySelector("#write-window-button");
+const writeWindow = document.querySelector(".modal");
+const newPostForm = writeWindow.querySelector("#new-post");
+const closeWriteWindow = writeWindow.querySelector("#close-write-window");
+const writeWindowBackground = writeWindow.querySelector("#write-window-background");
 
 fetch(POSTS_URL)
 .then(res => res.json())
@@ -58,15 +58,43 @@ function displayPost(post) {
 };
 
 buttonWriteWindow.addEventListener("click", event => {
-    console.log("I hate life")
     writeWindow.classList.add("is-active")
-    
 });
+
+
 
 newPostForm.addEventListener("submit", event =>{
     event.preventDefault()
     console.log(event.target)
     console.log(event.target.querySelector("#new-title").value)
-    let newPostData = {title: `${event.target.querySelector("#new-title").value}`, content: `${event.target.querySelector("#new-content").value}`}
+    const newPostData = {title: event.target.querySelector("#new-title").value,
+                        content: event.target.querySelector("#new-content").value}
     displayPost(newPostData)
+    scrollTop()
+
+    fetch(POSTS_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+          body: JSON.stringify(newPostData),
+        })
+    .then(res => console.log(newPostData))
 });
+
+closeWriteWindow.addEventListener("click", event => {
+    writeWindow.classList.remove("is-active")
+});
+
+writeWindowBackground.addEventListener("click", event => {
+    writeWindow.classList.remove("is-active")
+});
+
+
+function scrollTop() {
+    window.scroll({
+        top: 0, 
+        left: 0, 
+        behavior: 'smooth' 
+    })
+};

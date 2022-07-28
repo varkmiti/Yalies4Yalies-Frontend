@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Yalies4Yalies</title>
-    <link rel="stylesheet" href="css/mystyles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css" rel="stylesheet">
   </head>
   <body>
     
     
-    <nav class="navbar is-primary has-shadow is-spaced" role="navigation" aria-label="main navigation">
+    <nav class="navbar has-shadow is-spaced" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="file:///Users/markviti/Development/code/Phase-3/Yalies4Yalies/y4yFrontend/index.html">
           <img src="https://img.icons8.com/color-glass/144/000000/home.png"/>
@@ -84,7 +84,7 @@
 
     <!-- Modal -->
     <div class = "modal"> 
-      <div class = "modal-background"></div>
+      <div class = "modal-background" id = "write-window-background"></div>
       <div class ="modal-content has-background-white py-5 px-5">
         <form id="new-post">
           <h3>Write Post</h3>
@@ -93,7 +93,7 @@
           </div>
 
           <div>
-            <textarea class = "text-area is-large is-primary" placeholder = "Ask Yalies Here!"name="new-content" id="new-content"></textarea>
+            <input class = "text-area is-large is-primary" placeholder = "Ask Yalies Here!"name="new-content" id="new-content"></textarea>
           </div>
 
           <div>
@@ -103,8 +103,9 @@
           
           <input type="submit" value="Create" />
 
-
         </form>
+        <button id ="close-write-window">Cancel Post</button>
+
       </div>
     </div>
 
