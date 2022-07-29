@@ -29,14 +29,13 @@ mainArea.addEventListener("click", event => {
         if (event.target.parentNode.innerHTML == `<img id="like-button" src="./assets/icons8-heart-32.png">`) {
                         console.log("i like")
                         event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-filled-heart-32.png"/>                        `
-                        // debugger
                     } else {
                         console.log("unlike")
                         event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-heart-32.png"/>`
                     };
         
     } else if(event.target.parentNode.id == 'reply-window-button') {
-        writeWindow.classList.add("is-active")
+        replyWindow.classList.add("is-active")
 
 
     };
@@ -53,7 +52,7 @@ function displayPost(post) {
     postCard.classList.add("card")
     postCard.classList.add("is-fluid")
     postCard.innerHTML = `
-                    <div class= "m-5 p-5">
+                    <div class= "m-6 p-5">
                         <div class="media">
                             <div class="media-left">
                                 <figure class="image is-48x48">
@@ -88,7 +87,6 @@ function displayPost(post) {
                         </footer>
                     </div>`
     repliesFetch(postCard);
-    // makeReplyButton();
     mainArea.prepend(postCard);
     
 };
@@ -97,11 +95,14 @@ function listReplies(repliesArr, postCard){
     const mainThread = postCard.querySelector("#main-thread")
     let filteredReplies = repliesArr.filter(reply => reply.post_id == postCard.dataset.id)
     filteredReplies.forEach(reply => {
-        let replyItem = document.createElement("li")
+        let replyItem = document.createElement("div")
+        replyItem.classList.add("card")
+        replyItem.classList.add("p-5")
+        replyItem.classList.add("m-3")
         replyItem.textContent = `${reply.content}`
 
-        mainThread.prepend(replyItem)
-    newReplyForm.addEventListener("submit", event =>{
+        mainThread.append(replyItem)
+        newReplyForm.addEventListener("submit", event =>{
         event.preventDefault()
         const newReplyData = {content: event.target.querySelector("#new-content").value, post_id: 20}
         writeWindow.classList.remove("is-active")
@@ -124,13 +125,6 @@ function repliesFetch(postCard) {
     .then(res => res.json())
     .then(repliesArr => listReplies(repliesArr, postCard))
 };
-
-// function makeReplyButton() {
-//     const buttonReplyWindow = document.querySelectorAll("#reply-window-button");
-//     buttonReplyWindow.forEach(button => button.addEventListener("click", event => {
-//         replyWindow.classList.add("is-active")
-//     }))
-// };
 
 // Event Listeners
 buttonWriteWindow.addEventListener("click", event => {
@@ -171,10 +165,6 @@ replyWindowBackground.addEventListener("click", event => {
     replyWindow.classList.remove("is-active")
 });
 
-
-
-
-
 // Utility Functions
 function scrollTop() {
     window.scroll({
@@ -183,4 +173,3 @@ function scrollTop() {
         behavior: 'smooth' 
     })
 };
-
