@@ -28,16 +28,40 @@ mainArea.addEventListener("click", event => {
     if (event.target.id == 'like-button') {
         if (event.target.parentNode.innerHTML == `<img id="like-button" src="./assets/icons8-heart-32.png">`) {
                         console.log("i like")
-                        event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-filled-heart-32.png"/>                        `
+                        event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-filled-heart-32.png"/>`
                     } else {
                         console.log("unlike")
                         event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-heart-32.png"/>`
                     };
         
     } else if(event.target.parentNode.id == 'reply-window-button') {
+        console.log(event.target.parentNode.parentNode.parentNode.id)
+        let postId = event.target.parentNode.parentNode.parentNode.id
         replyWindow.classList.add("is-active")
+        newReplyForm.addEventListener("submit", event =>{
+                event.preventDefault()
+                const newReplyData = {content: event.target.querySelector("#new-content").value, post_id: postId}
+                replyWindow.classList.remove("is-active")
+
+                const mainThread = event.target.parentNode.parentNode.parentNode.querySelector("#main-thread")
+                let replyItem = document.createElement("div")
+                    replyItem.classList.add("card")
+                    replyItem.classList.add("p-5")
+                    replyItem.classList.add("m-3")
+                    replyItem.textContent = `${newReplyData.content}`
+
+                mainThread.append(replyItem)
 
 
+                fetch(REPLIES_URL, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                                body: JSON.stringify(newReplyData),
+                            })
+                        .then(res => console.log(newReplyData))
+        });
     };
 });
 
@@ -52,11 +76,11 @@ function displayPost(post) {
     postCard.classList.add("card")
     postCard.classList.add("is-fluid")
     postCard.innerHTML = `
-                    <div class= "m-6 p-5">
+                    <div class= "m-6 p-5" id = ${post.id} >
                         <div class="media">
                             <div class="media-left">
                                 <figure class="image is-48x48">
-                                <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                                    <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
                                 </figure>
                             </div>
                             <div class="media-content">
@@ -64,14 +88,21 @@ function displayPost(post) {
                                 <p class="subtitle is-6">@johnsmith</p>
                             </div>
                         </div>
-
-                        <div class="content">
-                            ${post.content} 
-                            <div class="tags has-addons">
-                                <span class="tag">Package</span>
-                                <span class="tag is-primary">Bulma</span>
+                        <div>
+                            <h2>${post.likes} Likes</h2>
+                        </div>
+                        <div class="tags py-2">
+                                <span class="tag" id = "tag-1">${post.tag1}</span>
+                                <span class="tag" id = "tag-2">${post.tag2}</span>
+                                <span class="tag" id = "tag-3">${post.tag2}</span>
                             </div>
-                            <time>${post.created_at}</time>
+                        <div class="content">
+                            <div>
+                                ${post.content} 
+                            </div>
+                            <div>
+                                <time>${post.created_at}</time>
+                            </div>
                         </div>
                         <div class ="buttons">
                             <button class="button is-success is-small" id = "reply-window-button"><img src="./assets/icons8-composing-mail-32.png"</button>
@@ -80,6 +111,7 @@ function displayPost(post) {
                        
                         <footer class="card-footer">
                         <div class = "content" id = "replies">
+                            <br>
                             <h4>Replies</h3>
                             <ul id= "main-thread">
                             </ul>
@@ -88,7 +120,6 @@ function displayPost(post) {
                     </div>`
     repliesFetch(postCard);
     mainArea.prepend(postCard);
-    
 };
 
 function listReplies(repliesArr, postCard){
@@ -102,21 +133,6 @@ function listReplies(repliesArr, postCard){
         replyItem.textContent = `${reply.content}`
 
         mainThread.append(replyItem)
-        newReplyForm.addEventListener("submit", event =>{
-        event.preventDefault()
-        const newReplyData = {content: event.target.querySelector("#new-content").value, post_id: 20}
-        writeWindow.classList.remove("is-active")
-        scrollTop()
-    
-        fetch(REPLIES_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-                body: JSON.stringify(newReplyData),
-            })
-        .then(res => console.log(newReplyData))
-    });
     })
 };
 
