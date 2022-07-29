@@ -24,7 +24,7 @@ fetch(POSTS_URL)
 
 // Fixing all my life problems in one javascript function
 mainArea.addEventListener("click", event => {
-    console.log(event.target.parentNode.innerHTML)
+    console.log(event.target.parentNode)
     if (event.target.id == 'like-button') {
         if (event.target.parentNode.innerHTML == `<img id="like-button" src="./assets/icons8-heart-32.png">`) {
                         console.log("i like")
@@ -35,6 +35,10 @@ mainArea.addEventListener("click", event => {
                         event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-heart-32.png"/>`
                     };
         
+    } else if(event.target.parentNode.id == 'reply-window-button') {
+        writeWindow.classList.add("is-active")
+
+
     };
 });
 
@@ -71,8 +75,8 @@ function displayPost(post) {
                             <time>${post.created_at}</time>
                         </div>
                         <div class ="buttons">
-                            <button class="button is-success is-small" id = "reply-window-button">Reply</button>
-                            <button class = "button is-sucess is-small"><img id = "like-button" src="./assets/icons8-heart-32.png"/></button>
+                            <button class="button is-success is-small" id = "reply-window-button"><img src="./assets/icons8-composing-mail-32.png"</button>
+                            <button class = "button is-small"><img id = "like-button" src="./assets/icons8-heart-32.png"/></button>
                         </div>
                        
                         <footer class="card-footer">
@@ -84,8 +88,7 @@ function displayPost(post) {
                         </footer>
                     </div>`
     repliesFetch(postCard);
-    makeReplyButton();
-    // makeLikeButton();
+    // makeReplyButton();
     mainArea.prepend(postCard);
     
 };
@@ -122,28 +125,12 @@ function repliesFetch(postCard) {
     .then(repliesArr => listReplies(repliesArr, postCard))
 };
 
-// function makeLikeButton() {
-//     const likeButton = document.querySelectorAll(".like-button");
-//     likeButton.forEach(button => button.addEventListener("click", event => {
-         
-//         if (button.innerHTML == `<img src="./assets/icons8-heart-24.png">`) {
-//             console.log("i like")
-//             button.innerHTML = `<img src="./assets/icons8-heart-26.png">`
-//             button.classList.add("is-danger")
-//         } else {
-//             console.log("unlike")
-//             button.innerHTML = `<img src="./assets/icons8-heart-24.png"/>`
-//             button.classList.remove("is-danger")
-//         };
-//     }));
+// function makeReplyButton() {
+//     const buttonReplyWindow = document.querySelectorAll("#reply-window-button");
+//     buttonReplyWindow.forEach(button => button.addEventListener("click", event => {
+//         replyWindow.classList.add("is-active")
+//     }))
 // };
-
-function makeReplyButton() {
-    const buttonReplyWindow = document.querySelectorAll("#reply-window-button");
-    buttonReplyWindow.forEach(button => button.addEventListener("click", event => {
-        replyWindow.classList.add("is-active")
-    }))
-};
 
 // Event Listeners
 buttonWriteWindow.addEventListener("click", event => {
