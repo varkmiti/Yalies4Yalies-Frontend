@@ -87,28 +87,35 @@
     </div>
 
     <!-- Write Window -->
-    <div class = "modal" id = "write-window"> 
-      <div class = "modal-background" id = "write-window-background"></div>
-      <div class ="modal-content has-background-white py-5 px-5">
-        <form id="new-post">
-          <h3>Write Post</h3>
-          <div>
-            <input class = "input is-primary is-medium is-rounded" type="text" name="title"  id="new-title"/>
-          </div>
+    <div class="modal" id = "write-window">
+      <div class="modal-background" id = "write-window-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Write Post</p>
+          <button class="delete" aria-label="close" id ="close-write-window"></button>
+        </header>
+        <section class="modal-card-body">
+          <form id="new-post">
+            <div>
+              <input class = "input is-primary is-medium is-rounded" type="text" name="title"  id="new-title"/>
+            </div>
 
-          <div>
-            <input class = "text-area is-large is-primary" placeholder = "Ask Yalies Here!"name="new-content" id="new-content"></textarea>
-          </div>
+            <div>
+              <input class = "text-area is-large is-primary" placeholder = "Ask Yalies Here!"name="new-content" id="new-content"></textarea>
+            </div>
 
-          <div>
-            <label for="image">Image: </label>
-            <input type="text" name="image" id="new-image"/>
-          </div>
-          
-          <input type="submit" value="Create" />
+            <div>
+              <label for="image">Image: </label>
+              <input type="text" name="image" id="new-image"/>
+            </div>
+            
+            <input type="submit" value="Create" />
 
-        </form>
-        <button id ="close-write-window">Cancel Post</button>
+          </form>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success">Publish Post</button>
+        </footer>
       </div>
     </div>
 

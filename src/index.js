@@ -24,11 +24,23 @@ fetch(POSTS_URL)
 
 // Fixing all my life problems in one javascript function
 mainArea.addEventListener("click", event => {
-    console.log(event.target.parentNode)
+    let postId = event.target.parentNode.parentNode.parentNode.id
+    let postLikes = event.target.parentNode.parentNode.parentNode.dataset.likes;
+    postLikes = parseInt(postLikes) + 1
     if (event.target.id == 'like-button') {
         if (event.target.parentNode.innerHTML == `<img id="like-button" src="./assets/icons8-heart-32.png">`) {
                         console.log("i like")
+                        // fetch(`POSTS_URL/${postId}`, {
+                        //     method: "PATCH", 
+                        //     header: {
+                        //         'Content-type': 'application/json'
+                        //     },
+                        //     body: JSON.stringify({
+                        //         likes: postLikes})
+                        // });
                         event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-filled-heart-32.png"/>`
+                        // let likesCount = event.target.parentNode.parentNode.parentNode.querySelector(".likes-display") 
+                        // likesCount.textContent= postLikes
                     } else {
                         console.log("unlike")
                         event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-heart-32.png"/>`
@@ -36,7 +48,6 @@ mainArea.addEventListener("click", event => {
         
     } else if(event.target.parentNode.id == 'reply-window-button') {
         console.log(event.target.parentNode.parentNode.parentNode.id)
-        let postId = event.target.parentNode.parentNode.parentNode.id
         replyWindow.classList.add("is-active")
         newReplyForm.addEventListener("submit", event =>{
                 event.preventDefault()
@@ -76,7 +87,7 @@ function displayPost(post) {
     postCard.classList.add("card")
     postCard.classList.add("is-fluid")
     postCard.innerHTML = `
-                    <div class= "m-6 p-5" id = ${post.id} >
+                    <div class= "m-6 p-5" id = ${post.id} data-likes = ${post.likes}>
                         <div class="media">
                             <div class="media-left">
                                 <figure class="image is-48x48">
@@ -89,7 +100,7 @@ function displayPost(post) {
                             </div>
                         </div>
                         <div>
-                            <h2>${post.likes} Likes</h2>
+                            <h2 class = "likes-display">${post.likes} Likes</h2>
                         </div>
                         <div class="tags py-2">
                                 <span class="tag" id = "tag-1">${post.tag1}</span>
@@ -150,7 +161,8 @@ buttonWriteWindow.addEventListener("click", event => {
 newPostForm.addEventListener("submit", event =>{
     event.preventDefault()
     const newPostData = {title: event.target.querySelector("#new-title").value,
-                        content: event.target.querySelector("#new-content").value}
+                        content: event.target.querySelector("#new-content").value,
+                        likes: 0}
     displayPost(newPostData)
     writeWindow.classList.remove("is-active")
     scrollTop()
