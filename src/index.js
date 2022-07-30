@@ -63,7 +63,6 @@ mainArea.addEventListener("click", event => {
 
                 mainThread.append(replyItem)
 
-
                 fetch(REPLIES_URL, {
                             method: 'POST',
                             headers: {
