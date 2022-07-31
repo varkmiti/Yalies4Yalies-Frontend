@@ -99,7 +99,7 @@
             <div class="field">
               <label class="label">Displayed Author</label>
               <div class="control has-icons-left">
-                <input class="input" type="text" placeholder="Text input" value = "This name will be shown to other Y4Y Users">
+                <input class="input" type="text" placeholder="Text input" value = "This name will be shown to other Y4Y Users" id ="show-user-name">
             </div>
 
             <br>
@@ -121,7 +121,7 @@
                 <label class="label">Subject</label>
                 <div class="control">
                   <div class="select">
-                    <select>
+                    <select id = "tag1-input">
                       <option>
                         Math
                       </option>
@@ -150,10 +150,25 @@
                 </div>
               </div>
 
+              <div class="field">
+              <label class="label" >Tag</label>
+                <input class="input" type="text" placeholder="Text input" value = "Add Tag Here" id ="tag2-input">
+                <span class="icon is-small is-left">
+                </span>
+              </div>
+
+              <div class="field">
+              <label class="label" >Tag</label>
+                <input class="input" type="text" placeholder="Text input" value = "Post Title Here" id ="tag3-input">
+                <span class="icon is-small is-left">
+                </span>
+              </div>
+
+
             <div class="field">
               <label class="label">Content</label>
               <div class="control">
-                <textarea class="textarea" placeholder="Textarea" id ="new-content"></textarea>
+                <textarea class="textarea" placeholder="Textarea" id ="new-write-content"></textarea>
               </div>
             </div>
             
@@ -180,18 +195,35 @@
 
     <!-- Reply Window -->
     <div class = "modal" id = "reply-window"> 
-      <div class = "modal-background" id = "reply-window-background"></div>
-      <div class ="modal-content has-background-white py-5 px-5">
-        <form id="new-reply">
+      <div class="modal-background" id = "reply-window-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Write Reply</p>
+          <button class="delete" aria-label="close" id ="close-reply-window"></button>
+        </header>
+        <section class="modal-card-body">
+        <form id = "new-reply">
+          <div class="field">
+            <label class="label">Displayed Author</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Text input" value = "This name will be shown to other Y4Y Users" id ="reply-user-name">
+          </div>
 
-          <div>
-            <input class = "text-area is-large is-primary" placeholder = "Help Yalies Here!"name="new-content" id="new-content"></textarea>
+          <br>
+
+          <div class="field">
+            <label class="label">Content</label>
+            <div class="control">
+              <textarea class="textarea" placeholder="Textarea" id ="new-reply-content"></textarea>
+            </div>
           </div>
           
-          <input type="submit" value="Create"/>
-
+          <div class="field is-grouped">
+            <div class="control">
+              <input id = "#reply-window" class = "button is-success" type = "submit" value = "Publish Post"/>
+            </div>
+          </div>
         </form>
-        <button id ="close-reply-window">Cancel Post</button>
       </div>
     </div>
 

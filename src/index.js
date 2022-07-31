@@ -26,54 +26,47 @@ fetch(POSTS_URL)
 mainArea.addEventListener("click", event => {
     let postId = event.target.parentNode.parentNode.parentNode.id
     let postLikes = event.target.parentNode.parentNode.parentNode.dataset.likes;
-    postLikes = parseInt(postLikes) + 1
+    postLikes = parseInt(postLikes) + 1;
     if (event.target.id == 'like-button') {
         if (event.target.parentNode.innerHTML == `<img id="like-button" src="./assets/icons8-heart-32.png">`) {
                         console.log("i like")
-                        // fetch(`POSTS_URL/${postId}`, {
-                        //     method: "PATCH", 
-                        //     header: {
-                        //         'Content-type': 'application/json'
-                        //     },
-                        //     body: JSON.stringify({
-                        //         likes: postLikes})
-                        // });
+                        const likesCount = event.target.parentNode.parentNode.parentNode.querySelector("#likes-display") 
                         event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-filled-heart-32.png"/>`
-                        // let likesCount = event.target.parentNode.parentNode.parentNode.querySelector(".likes-display") 
-                        // likesCount.textContent= postLikes
+                        likesCount.textContent= `${postLikes} Likes`
                     } else {
                         console.log("unlike")
+                        const likesCount = event.target.parentNode.parentNode.parentNode.querySelector("#likes-display") 
                         event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-heart-32.png"/>`
+                        postLikes = parseInt(postLikes) - 1;
+                        likesCount.textContent= `${postLikes} Likes`
+
                     };
         
     } else if(event.target.parentNode.id == 'reply-window-button') {
-        console.log(event.target.parentNode.parentNode.parentNode.id)
+        console.log(postId)
         replyWindow.classList.add("is-active")
-        newReplyForm.addEventListener("submit", event =>{
-                event.preventDefault()
-                const newReplyData = {content: event.target.querySelector("#new-content").value, post_id: postId}
-                replyWindow.classList.remove("is-active")
-
-                const mainThread = event.target.parentNode.parentNode.parentNode.querySelector("#main-thread")
-                let replyItem = document.createElement("div")
-                    replyItem.classList.add("card")
-                    replyItem.classList.add("p-5")
-                    replyItem.classList.add("m-3")
-                    replyItem.textContent = `${newReplyData.content}`
-
-                mainThread.append(replyItem)
-
-                fetch(REPLIES_URL, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                                body: JSON.stringify(newReplyData),
-                            })
-                        .then(res => console.log(newReplyData))
-        });
+        newReply(postId)
     };
 });
+function newReply(postId) {
+    console.log(`Creating a reply to post ${postId}`)
+    newReplyForm.addEventListener("submit", event =>{
+        event.preventDefault()
+        const newReplyData = {content: event.target.querySelector("#new-reply-content").value, post_id: postId}
+        replyWindow.classList.remove("is-active")
+
+        fetch(REPLIES_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                        body: JSON.stringify(newReplyData),
+                    })
+                .then(res => console.log(newReplyData))
+    location.reload()
+
+});
+}
 
 // Display Functions
 function displayAllPosts(postArray) {
@@ -95,16 +88,16 @@ function displayPost(post) {
                             </div>
                             <div class="media-content">
                                 <p class="title is-4">${post.title}</p>
-                                <p class="subtitle is-6">@johnsmith</p>
+                                <p class="subtitle is-6">@${post.showname}</p>
                             </div>
                         </div>
                         <div>
-                            <h2 class = "likes-display">${post.likes} Likes</h2>
+                            <h2 id = "likes-display">${post.likes} Likes</h2>
                         </div>
                         <div class="tags py-2">
                                 <span class="tag" id = "tag-1">${post.tag1}</span>
                                 <span class="tag" id = "tag-2">${post.tag2}</span>
-                                <span class="tag" id = "tag-3">${post.tag2}</span>
+                                <span class="tag" id = "tag-3">${post.tag3}</span>
                             </div>
                         <div class="content">
                             <div>
@@ -135,6 +128,7 @@ function displayPost(post) {
 function listReplies(repliesArr, postCard){
     const mainThread = postCard.querySelector("#main-thread")
     let filteredReplies = repliesArr.filter(reply => reply.post_id == postCard.dataset.id)
+    // debugger
     filteredReplies.forEach(reply => {
         let replyItem = document.createElement("div")
         replyItem.classList.add("card")
@@ -160,8 +154,12 @@ buttonWriteWindow.addEventListener("click", event => {
 newPostForm.addEventListener("submit", event =>{
     event.preventDefault()
     const newPostData = {title: event.target.querySelector("#new-title").value,
-                        content: event.target.querySelector("#new-content").value,
-                        likes: 0}
+                        content: event.target.querySelector("#new-write-content").value,
+                        likes: 0, 
+                        showname: event.target.querySelector("#show-user-name").value,
+                        tag1: event.target.querySelector("#tag1-input").options[event.target.querySelector("#tag1-input").selectedIndex].value,
+                        tag2: event.target.querySelector("#tag2-input").value,
+                        tag3: event.target.querySelector("#tag3-input").value}
     displayPost(newPostData)
     writeWindow.classList.remove("is-active")
     scrollTop()
