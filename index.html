@@ -75,7 +75,7 @@
             <button id = "write-window-button" class="button is-success is-large modal-button" data-target="modal-ter" aria-haspopup="true">
               Write Post
             </button>
-            <button class="button is-danger is-large">
+            <button class="button is-danger is-large" id = "sign-in-window-button">
               <strong>Sign up</strong>
             </button>
           </div>
@@ -224,9 +224,90 @@
             </div>
           </div>
         </form>
+        </section>
+        <footer class="modal-card-foot">
+        </footer>
       </div>
     </div>
+  </div>
 
+    <!--Welcome Window -->
+    <div class = "modal is-active" id = "welcome-window"> 
+      <div class="modal-background" id = "reply-window-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Welcome to Y4Y</p>
+        </header>
+    <section class="modal-card-body">
+    <form id = "new-user-form">
+      <div class="field">
+        <label class="label">Username</label>
+          <input class="input is-success" type="text" placeholder="Text input" value="username" id ="new-username">
+          <span class="icon is-small is-left">
+            <i class="fas fa-user"></i>
+          </span>
+          <span class="icon is-small is-right">
+            <i class="fas fa-check"></i>
+          </span>
+        <p class="help is-success">This username is available</p>
+      </div>
+      
+      <div class="field">
+        <label class="label">Email</label>
+          <input class="input" type="email" placeholder="Email" id = "new-email">
+          <span class="icon is-small is-left">
+            <i class="fas fa-envelope"></i>
+          </span>
+          <span class="icon is-small is-right">
+            <i class="fas fa-check"></i>
+          </span>
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="label">Password</label>
+          <input class="input" type="password" placeholder="Password" id ="new-password">
+          <span class="icon is-small is-left">
+            <i class="fas fa-lock"></i>
+          </span>
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="label">College</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="Text input" id = "new-college">
+        </div>
+      </div>
+      <br>
+      <div class="field">
+        <label class="label">Major</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="Text input" id ="new-major">
+        </div>
+      </div>
+      
+      <div class="field">
+        <div class="control">
+          <label class="checkbox">
+            <input type="checkbox">
+            I agree to the <a href="#">terms and conditions</a>
+          </label>
+        </div>
+      </div>
+      
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-link">Submit</button>
+        </div>
+      </div>
+    </form>
+    </section>
+    <footer class="modal-card-foot">
+      <a href="">How We Use Your Data</a>
+    </footer>
+    </div>
+    </div>
     <script defer src="./src/index.js" src="https://apis.google.com/js/platform.js" async defer></script>
   </body>
 </html>

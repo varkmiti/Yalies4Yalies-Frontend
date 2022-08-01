@@ -1,11 +1,17 @@
 
 // URLs
 const POSTS_URL = "http://127.0.0.1:3000/posts";
-const REPLIES_URL = "http://127.0.0.1:3000/replies"
+const REPLIES_URL = "http://127.0.0.1:3000/replies";
+const USERS_URL = "http://127.0.0.1:3000/users";
 
 // DOM Elements
 const mainArea = document.querySelector("#main");
 const navBar = document.querySelector("nav");
+
+const buttonSignIn = navBar.querySelector("#sign-in-window-button");
+const welcomeWindow = document.querySelector("#welcome-window");
+const newUserForm = document.querySelector("#new-user-form");
+
 const buttonWriteWindow = navBar.querySelector("#write-window-button");
 const writeWindow = document.querySelector("#write-window");
 const newPostForm = writeWindow.querySelector("#new-post");
@@ -39,7 +45,6 @@ mainArea.addEventListener("click", event => {
                         event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-heart-32.png"/>`
                         postLikes = parseInt(postLikes) - 1;
                         likesCount.textContent= `${postLikes} Likes`
-
                     };
         
     } else if(event.target.parentNode.id == 'reply-window-button') {
@@ -48,6 +53,7 @@ mainArea.addEventListener("click", event => {
         newReply(postId)
     };
 });
+
 function newReply(postId) {
     console.log(`Creating a reply to post ${postId}`)
     newReplyForm.addEventListener("submit", event =>{
@@ -64,7 +70,6 @@ function newReply(postId) {
                     })
                 .then(res => console.log(newReplyData))
     location.reload()
-
 });
 }
 
@@ -99,14 +104,16 @@ function displayPost(post) {
                                 <span class="tag" id = "tag-2">${post.tag2}</span>
                                 <span class="tag" id = "tag-3">${post.tag3}</span>
                             </div>
-                        <div class="content">
+                        <div class="content p-3 m-5">
                             <div>
                                 ${post.content} 
                             </div>
-                            <div>
-                                <time>${post.created_at}</time>
-                            </div>
                         </div>
+
+                        <div class = "content">
+                            <time>${post.created_at}</time>
+                        </div>
+
                         <div class ="buttons">
                             <button class="button is-success is-small" id = "reply-window-button"><img src="./assets/icons8-composing-mail-32.png"</button>
                             <button class = "button is-small"><img id = "like-button" src="./assets/icons8-heart-32.png"/></button>
@@ -147,6 +154,32 @@ function repliesFetch(postCard) {
 };
 
 // Event Listeners
+buttonSignIn.addEventListener("click", event => {
+    welcomeWindow.classList.add("is-active")
+});
+
+newUserForm.addEventListener("submit", event => {
+    event.preventDefault()
+    const newUserData = {username: event.target.querySelector("#new-username").value,
+                        email: event.target.querySelector("#new-email").value,
+                        password: event.target.querySelector("#new-password").value,
+                        college: event.target.querySelector("#new-college").value,
+                        major: event.target.querySelector("#new-major").value}
+    console.log(newUserData)
+    welcomeWindow.classList.remove("is-active")
+    scrollTop()
+    
+    fetch(USERS_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUserData),
+    })
+    .then(res => console.log(newUserData))
+
+});
+
 buttonWriteWindow.addEventListener("click", event => {
     writeWindow.classList.add("is-active")
 });
@@ -161,7 +194,7 @@ newPostForm.addEventListener("submit", event =>{
                         tag2: event.target.querySelector("#tag2-input").value,
                         tag3: event.target.querySelector("#tag3-input").value}
     displayPost(newPostData)
-    writeWindow.classList.remove("is-active")
+
     scrollTop()
 
     fetch(POSTS_URL, {
