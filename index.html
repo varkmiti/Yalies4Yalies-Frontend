@@ -232,7 +232,7 @@
   </div>
 
     <!--Welcome Window -->
-    <div class = "modal is-active" id = "welcome-window"> 
+    <div class = "modal" id = "welcome-window"> 
       <div class="modal-background" id = "reply-window-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
@@ -304,11 +304,54 @@
     </form>
     </section>
     <footer class="modal-card-foot">
-      <a href="">How We Use Your Data</a>
+      <a href="https://www.google.com/search?q=bingus&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiR0qbSk6b5AhVRGFkFHanpCZgQ_AUoAXoECAIQAw&cshid=1659374485750213&biw=1194&bih=731&dpr=2">How We Use Your Data</a>
     </footer>
     </div>
     </div>
+
+    <!-- Hey there!-->
+    <div class = "modal is-active" id = "hey-there-window"> 
+      <div class="modal-background" id = "hey-there-window-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">👋, Welcome Back!</p>
+        </header>
+        <section class="modal-card-body">
+          
+        <form id ="existing-user-sign-in">
+          <div class="field">
+            <label class="label">Email</label>
+              <input class="input" type="email" placeholder="Email" id = "existing-user-email">
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-check"></i>
+              </span>
+            </p>
+          </div>
+    
+          <div class="field">
+            <label class="label">Password</label>
+              <input class="input" type="password" placeholder="Password" id ="existing-user-password">
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-success"><strong>Submit</strong></button>
+            </div>
+          </div>
+        </form>
+        </section>
+        <footer class="modal-card-foot">
+        </footer>
+      </div>
+    </div>
+  </div>
+
     <script defer src="./src/index.js" src="https://apis.google.com/js/platform.js" async defer></script>
   </body>
 </html>
-
