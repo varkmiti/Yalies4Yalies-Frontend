@@ -111,7 +111,7 @@ function displayPost(post) {
                             <h2 id = "likes-display">${post.likes} Likes</h2>
                         </div>
                         <div class="tags py-2">
-                                <span class="tag" id = "tag-1">${post.tag1}</span>
+                                <span class="tag is-link" id = "tag-1">${post.tag1}</span>
                                 <span class="tag" id = "tag-2">${post.tag2}</span>
                                 <span class="tag" id = "tag-3">${post.tag3}</span>
                             </div>
