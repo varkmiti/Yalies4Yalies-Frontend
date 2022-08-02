@@ -11,78 +11,85 @@
     
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand is-primary">
-        <a class="navbar-item" href="file:///Users/markviti/Development/code/Phase-3/Yalies4Yalies/y4yFrontend/index.html">
-          <img src="https://img.icons8.com/color-glass/144/000000/home.png"/>
-        </a>
-    
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-    
-      <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-start">
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-              Subjects
-            </a>
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-start">
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">
+                <img src="https://img.icons8.com/ios/50/000000/settings--v1.png"/>
+              </a>
               <div class="navbar-dropdown">
                 <a class="navbar-item">
-                  Math
-                  <img src="./assets/icons8-math-64.png"/>
+                  About You
                 </a>
-                <a class="navbar-item">
-                  Economics
-                  <img src="./assets/icons8-economics-64.png"/>
-                </a>
-                <a class="navbar-item">
-                  Biology
-                  <img src="./assets/icons8-biology-64.png"/>                
-                </a>
-                <a class="navbar-item">
-                  Chemistry
-                  <img src="./assets/icons8-chemistry-64.png"/>
-                </a>
-                <a class="navbar-item">
-                  Social Sciences
-                  <img src="./assets/icons8-society-64.png"/>
-                </a>
-                <a class="navbar-item">
-                  Humanities
-                  <img src="./assets/icons8-books-64.png"/>
+                <a class="navbar-item" href = "mailto:mark.viti@yale.edu">
+                  About Us
                 </a>
                 <hr class="navbar-divider">
-                <a class="navbar-item">
+                <a class="navbar-item" href = "mailto:mark.viti@yale.edu">
                   Report an issue
                 </a>
               </div>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <div  class="navbar-menu">
+        <div class="navbar-start">
           <div class="navbar-item">
             <div class = "buttons">
               <button class ="button is-danger"><strong>Personal</strong></button>
             </div>
+          </div>
+          <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">Subjects</a>
+            <div class="navbar-dropdown">
+              <a class="navbar-item" id = "math-selector">
+                Math
+                <img src="./assets/icons8-math-64.png"/>
+              </a>
+              <a class="navbar-item" id = "economics-selector">
+                Economics
+                <img src="./assets/icons8-economics-64.png"/>
+              </a>
+              <a class="navbar-item" id = "biology-selector">
+                Biology
+                <img src="./assets/icons8-biology-64.png"/>                
+              </a>
+              <a class="navbar-item" id ="chemistry-selector">
+                Chemistry
+                <img src="./assets/icons8-chemistry-64.png"/>
+              </a>
+              <a class="navbar-item" id = "social-sciences-selector">
+                Social Sciences
+                <img src="./assets/icons8-society-64.png"/>
+              </a>
+              <a class="navbar-item" id = "humanities-selector">
+                Humanities
+                <img src="./assets/icons8-books-64.png"/>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class = "navbar-item ">
-
+      <div class = "navbar-item">
+        <div class="field">
+          <div class="control">
+            <input class="input"  id = "search-bar" type="text" placeholder= "Search">
+          </div>
+        </div>
       </div>
-      
-        <div class="navbar-item">
-          <div class="buttons">
-            <button id = "write-window-button" class="button is-success is-large modal-button" data-target="modal-ter" aria-haspopup="true">
-              Write Post
-            </button>
-            <button class="button is-danger is-large" id = "sign-in-window-button">
-              <strong>Sign up</strong>
-            </button>
-          </div>
-          </div>
+
+      <div class="navbar-item mt-2 mr-2">
+        <div class="buttons">
+          <button id = "write-window-button" class="button is-success is-large modal-button" data-target="modal-ter" aria-haspopup="true">
+            Write Post
+          </button>
         </div>
       </div>
     </nav>
+
     <div id = "main">
     </div>
 
@@ -236,7 +243,7 @@
       <div class="modal-background" id = "reply-window-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">Welcome to Y4Y</p>
+          <p class="modal-card-title">Welcome to Y4Y!</p>
         </header>
     <section class="modal-card-body">
     <form id = "new-user-form">
@@ -317,7 +324,7 @@
           <p class="modal-card-title">👋, Welcome Back!</p>
         </header>
         <section class="modal-card-body">
-          
+
         <form id ="existing-user-sign-in">
           <div class="field">
             <label class="label">Email</label>
@@ -339,19 +346,26 @@
               </span>
             </p>
           </div>
-          <div class="field is-grouped">
+
+          <div class="field is-grouped ">
             <div class="control">
-              <button class="button is-success"><strong>Submit</strong></button>
+              <button class="button is-success"><strong>Sign In</strong></button>
             </div>
           </div>
         </form>
         </section>
         <footer class="modal-card-foot">
+          <div class="field is-grouped ">
+            <div class="control">
+            <p>Don't have an account? Get started below!</p>
+              <button class = "button is-danger" id = "sign-in-window-button"><strong>Sign Up</strong></button>
+            </div>
+          </div>
         </footer>
       </div>
     </div>
   </div>
 
-    <script defer src="./src/index.js" src="https://apis.google.com/js/platform.js" async defer></script>
+    <script defer src="./src/index.js" src="https://apis.google.com/js/platform.js" src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
   </body>
 </html>

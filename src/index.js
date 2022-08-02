@@ -8,7 +8,8 @@ const USERS_URL = "http://127.0.0.1:3000/users";
 const mainArea = document.querySelector("#main");
 const navBar = document.querySelector("nav");
 
-const buttonSignIn = navBar.querySelector("#sign-in-window-button");
+const buttonSignIn = document.querySelector("#sign-in-window-button");
+const heyThereWindow = document.querySelector("#hey-there-window");
 const welcomeWindow = document.querySelector("#welcome-window");
 const newUserForm = document.querySelector("#new-user-form");
 
@@ -22,6 +23,15 @@ const newReplyForm = document.querySelector("#new-reply")
 const replyWindow = document.querySelector("#reply-window");
 const closeReplyWindow = document.querySelector("#close-reply-window");
 const replyWindowBackground = document.querySelector("#reply-window-background");
+
+const searchBar = document.querySelector("#search-bar"); 
+const mathSelector = document.querySelector("#math-selector");
+const econSelector = document.querySelector("#economics-selector");
+const bioSelector = document.querySelector("#biology-selector");
+const chemSelector = document.querySelector("#chemistry-selector");
+const socialSciencesSelector = document.querySelector("#social-sciences-selector");
+const humanitiesSelector = document.querySelector("#humanities-selector");
+
 
 // Establishing Fetches
 fetch(POSTS_URL)
@@ -83,6 +93,7 @@ function displayPost(post) {
     postCard.dataset.id = post.id;
     postCard.classList.add("card")
     postCard.classList.add("is-fluid")
+    postCard.classList.add("individual-post")
     postCard.innerHTML = `
                     <div class= "m-6 p-5" id = ${post.id} data-likes = ${post.likes}>
                         <div class="media">
@@ -153,8 +164,115 @@ function repliesFetch(postCard) {
     .then(repliesArr => listReplies(repliesArr, postCard))
 };
 
+function filterBySearch(postArray, seachParams) {
+    // debugger
+    // return postArray.filter(post => post.tag1.toLowerCase().includes(seachParams))
+    return postArray.filter(post => searchMagic(post, seachParams))
+};
+
+function searchMagic(post, seachParams) {
+    if (post.tag1.toLowerCase().includes(seachParams) || 
+    post.tag2.toLowerCase().includes(seachParams) || 
+    post.tag3.toLowerCase().includes(seachParams) ||
+    post.title.toLowerCase().includes(seachParams) ||
+    post.tag1.includes(seachParams) || 
+    post.tag2.includes(seachParams) || 
+    post.tag3.includes(seachParams) ||
+    post.title.includes(seachParams)) {
+        return post
+    }
+};
+
+function filterByMath(postArray) {
+    return postArray.filter(post => post.tag1 == "Math")
+};
+
+function filterByEcon(postArray) {
+    return postArray.filter(post => post.tag1 == "Economics")
+};
+
+function filterByBio(postArray) {
+    return postArray.filter(post => post.tag1 == "Biology")
+};
+
+function filterByChem(postArray) {
+    return postArray.filter(post => post.tag1 == "Chemistry")
+};
+
+function filterBySocialSciences(postArray) {
+    return postArray.filter(post => post.tag1 == "Social Science")
+};
+
+function filterByHumanities(postArray) {
+    return postArray.filter(post => post.tag1 == "Humanities")
+};
+
 // Event Listeners
+searchBar.addEventListener("input", event => {
+    const allDisplayedPosts = document.querySelectorAll(".individual-post");
+    allDisplayedPosts.forEach(post => post.remove())
+    fetch(POSTS_URL)
+    .then(res => res.json())
+    .then(postArray => filterBySearch(postArray, event.target.value))
+    .then(filteredSearchArray => displayAllPosts(filteredSearchArray))
+});
+
+mathSelector.addEventListener("click", event => {
+    const allDisplayedPosts = document.querySelectorAll(".individual-post");
+    allDisplayedPosts.forEach(post => post.remove())
+    fetch(POSTS_URL)
+    .then(res => res.json())
+    .then(postArray => filterByMath(postArray))
+    .then(filteredSearchArray => displayAllPosts(filteredSearchArray))
+});
+
+econSelector.addEventListener("click", event => {
+    const allDisplayedPosts = document.querySelectorAll(".individual-post");
+    allDisplayedPosts.forEach(post => post.remove())
+    fetch(POSTS_URL)
+    .then(res => res.json())
+    .then(postArray => filterByEcon(postArray))
+    .then(filteredSearchArray => displayAllPosts(filteredSearchArray))
+});
+
+bioSelector.addEventListener("click", event => {
+    const allDisplayedPosts = document.querySelectorAll(".individual-post");
+    allDisplayedPosts.forEach(post => post.remove())
+    fetch(POSTS_URL)
+    .then(res => res.json())
+    .then(postArray => filterByBio(postArray))
+    .then(filteredSearchArray => displayAllPosts(filteredSearchArray))
+});
+
+chemSelector.addEventListener("click", event => {
+    const allDisplayedPosts = document.querySelectorAll(".individual-post");
+    allDisplayedPosts.forEach(post => post.remove())
+    fetch(POSTS_URL)
+    .then(res => res.json())
+    .then(postArray => filterByChem(postArray))
+    .then(filteredSearchArray => displayAllPosts(filteredSearchArray))
+});
+
+socialSciencesSelector.addEventListener("click", event => {
+    const allDisplayedPosts = document.querySelectorAll(".individual-post");
+    allDisplayedPosts.forEach(post => post.remove())
+    fetch(POSTS_URL)
+    .then(res => res.json())
+    .then(postArray => filterBySocialSciences(postArray))
+    .then(filteredSearchArray => displayAllPosts(filteredSearchArray))
+});
+
+humanitiesSelector.addEventListener("click", event => {
+    const allDisplayedPosts = document.querySelectorAll(".individual-post");
+    allDisplayedPosts.forEach(post => post.remove())
+    fetch(POSTS_URL)
+    .then(res => res.json())
+    .then(postArray => filterByHumanities(postArray))
+    .then(filteredSearchArray => displayAllPosts(filteredSearchArray))
+});
+
 buttonSignIn.addEventListener("click", event => {
+    heyThereWindow.classList.remove("is-active")
     welcomeWindow.classList.add("is-active")
 });
 
