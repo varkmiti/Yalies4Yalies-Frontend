@@ -33,6 +33,31 @@ const socialSciencesSelector = document.querySelector("#social-sciences-selector
 const humanitiesSelector = document.querySelector("#humanities-selector");
 const personalSelector = document.querySelector("#personal-selector");
 
+const signInForm = document.querySelector("#sign-in-form");
+
+signInForm.addEventListener("submit", event => {
+    event.preventDefault();
+    const username = signInForm.querySelector("#sign-in-username").value;
+    const password = signInForm.querySelector("#sign-in-password").value;
+
+   fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password
+        })
+    })
+    .then(res => res.json())
+    .then(console.log.user)
+    .then(resp => localStorage.setItem("user_id", resp.user.id));
+    heyThereWindow.classList.remove("is-active");
+});
+
+
+
 
 // Establishing Fetches
 fetch(POSTS_URL)
