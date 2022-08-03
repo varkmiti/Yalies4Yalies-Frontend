@@ -40,7 +40,7 @@
         <div class="navbar-start">
           <div class="navbar-item">
             <div class = "buttons">
-              <button class ="button is-danger"><strong>Personal</strong></button>
+              <button class ="button is-danger" id ="personal-selector"><strong>Personal</strong></button>
             </div>
           </div>
           <div class="navbar-item has-dropdown is-hoverable">
@@ -113,13 +113,6 @@
         </header>
         <section class="modal-card-body">
           <form id = "new-post">
-            <div class="field">
-              <label class="label">Displayed Author</label>
-              <div class="control has-icons-left">
-                <input class="input" type="text" placeholder="Text input" value = "This name will be shown to other Y4Y Users" id ="show-user-name">
-            </div>
-
-            <br>
 
             <label class="label" >Title of Post</label>
               <div class="control has-icons-left has-icons-right">
@@ -131,14 +124,24 @@
                   <i class="fas fa-check"></i>
                 </span>
               </div>
+              <br>
+
+              <div class="field">
+                <label class="label">Displayed Author</label>
+                <div class="control has-icons-left">
+                  <input class="input" type="text" placeholder="Text input" value = "This name will be shown to other Y4Y Users" id ="show-user-name">
+              </div>
 
               <br>
 
               <div class="field">
-                <label class="label">Subject</label>
+                <label class="label">Category</label>
                 <div class="control">
                   <div class="select">
                     <select id = "tag1-input">
+                      <option class ="is-danger">
+                        Personal
+                      </option>
                       <option>
                         Math
                       </option>

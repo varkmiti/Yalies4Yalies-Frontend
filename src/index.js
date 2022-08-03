@@ -1,6 +1,5 @@
 
 // URLs
-// const POSTS_URL = "http://127.0.0.1:3000/posts";
 const POSTS_URL = "http://127.0.0.1:3000/posts";
 const REPLIES_URL = "http://127.0.0.1:3000/replies";
 const USERS_URL = "http://127.0.0.1:3000/users";
@@ -32,6 +31,7 @@ const bioSelector = document.querySelector("#biology-selector");
 const chemSelector = document.querySelector("#chemistry-selector");
 const socialSciencesSelector = document.querySelector("#social-sciences-selector");
 const humanitiesSelector = document.querySelector("#humanities-selector");
+const personalSelector = document.querySelector("#personal-selector");
 
 
 // Establishing Fetches
@@ -95,6 +95,13 @@ function displayAllPosts(postArray) {
     postArray.forEach(post => displayPost(post))
 };
 
+function tag1Color(postCard) {
+    const tag1 = postCard.querySelector(".tag");
+    if (tag1.textContent == "Personal") {
+        tag1.classList.add("is-danger")
+    } else { tag1.classList.add("is-link") }
+};
+
 function displayPost(post) {
     let postCard = document.createElement("div");
     postCard.dataset.id = post.id;
@@ -113,7 +120,7 @@ function displayPost(post) {
                             <h2 id = "likes-display">${post.likes} Likes</h2>
                         </div>
                         <div class="tags py-2">
-                                <span class="tag is-link" id = "tag-1">${post.tag1}</span>
+                                <span class="tag" id = "tag-1">${post.tag1}</span>
                                 <span class="tag" id = "tag-2">${post.tag2}</span>
                                 <span class="tag" id = "tag-3">${post.tag3}</span>
                             </div>
@@ -141,6 +148,7 @@ function displayPost(post) {
                         </div>
                         </footer>
                     </div>`
+    tag1Color(postCard);
     repliesFetch(postCard);
     mainArea.prepend(postCard);
 };
@@ -172,9 +180,13 @@ function repliesFetch(postCard) {
 };
 
 function filterBySearch(postArray, seachParams) {
-    // debugger
-    // return postArray.filter(post => post.tag1.toLowerCase().includes(seachParams))
+    if (seachParams == " ") {
+        fetch(POSTS_URL)
+        .then(res => res.json())
+        .then(postArray => displayAllPosts(postArray));
+    } else {
     return postArray.filter(post => searchMagic(post, seachParams))
+    }
 };
 
 function searchMagic(post, seachParams) {
@@ -213,6 +225,10 @@ function filterBySocialSciences(postArray) {
 function filterByHumanities(postArray) {
     return postArray.filter(post => post.tag1 == "Humanities")
 };
+
+function filterByPersonal(postArray) {
+    return postArray.filter(post => post.tag1 == "Personal")
+}
 
 // Event Listeners
 searchBar.addEventListener("input", event => {
@@ -275,6 +291,15 @@ humanitiesSelector.addEventListener("click", event => {
     fetch(POSTS_URL)
     .then(res => res.json())
     .then(postArray => filterByHumanities(postArray))
+    .then(filteredSearchArray => displayAllPosts(filteredSearchArray))
+});
+
+personalSelector.addEventListener("click", event => {
+    const allDisplayedPosts = document.querySelectorAll(".individual-post");
+    allDisplayedPosts.forEach(post => post.remove())
+    fetch(POSTS_URL)
+    .then(res => res.json())
+    .then(postArray => filterByPersonal(postArray))
     .then(filteredSearchArray => displayAllPosts(filteredSearchArray))
 });
 
