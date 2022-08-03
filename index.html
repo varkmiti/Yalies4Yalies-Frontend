@@ -330,24 +330,44 @@
     </div>
 
     <!-- Hey there!-->
-    <div class = "modal" id = "hey-there-window"> 
+    <div class = "modal is-active" id = "hey-there-window"> 
       <div class="modal-background" id = "hey-there-window-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">👋, Welcome Back!</p>
         </header>
         <section class="modal-card-body">
-        <!-- <div class="g_id_signin" data-type="standard"></div>
-            <!-- <script src="https://accounts.google.com/gsi/client"></script>
-            <div id="g_id_onload"
-                data-client_id="596585597319-is7s7vss6gedbr9vtgi84nu1eqq584uv.apps.googleusercontent.com"
-                data-callback="handleCredentialResponse">
-            </div> --> 
+        <form id ="sign-in-form">
+          <div class="field">
+            <p class="control has-icons-left has-icons-right">
+              <input class="input" type="email" placeholder="Email" id ="sign-in-email">
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-check"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" type="password" placeholder="Password" id ="sign-in-password">
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-link">Submit</button>
+            </div>
+          </div>
+        </form>
+        <br>
+        <p>Don't have an account? Get started below!</p>
         </section>
         <footer class="modal-card-foot">
-          <div class="field is-grouped ">
-            <div class="control"></div>
-          </div>
+          <button class="button is-success" id="sign-in-window-button">Create New Account</button>
         </footer>
       </div>
     </div>

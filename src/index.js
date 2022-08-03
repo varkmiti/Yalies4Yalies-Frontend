@@ -51,6 +51,17 @@ mainArea.addEventListener("click", event => {
                         event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-filled-heart-32.png"/>`
                         likesCount.textContent= `${postLikes} Likes`
 
+                        const postData = {likes: postLikes, id: postId}
+
+                        fetch(POSTS_URL + `/${postId}`, {
+                            method: "PATCH",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Accept": "application/json"
+                            },
+                            body: JSON.stringify(postData)
+                        });
+
                     } else {
                         console.log("unlike")
                         const likesCount = event.target.parentNode.parentNode.parentNode.querySelector("#likes-display") 
@@ -58,22 +69,14 @@ mainArea.addEventListener("click", event => {
                         postLikes = parseInt(postLikes) - 1;
                         likesCount.textContent= `${postLikes} Likes`
                     };
-        const postData = {likes: postLikes, id: postId}
-
-        fetch(POSTS_URL + `/${postId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify(postData)
-        });
+        
         
     } else if(event.target.parentNode.id == 'reply-window-button') {
+        
         console.log(postId)
         replyWindow.classList.add("is-active")
         newReply(postId)
-    };
+    } ;
 });
 
 function newReply(postId) {
@@ -124,7 +127,7 @@ function displayPost(post) {
                         <div class="media">
                             <div class="media-content">
                                 <p class="title is-4">${post.title}</p>
-                                <p class="subtitle is-6">@${post.postname}</p>
+                                <p class="subtitle is-6">@<a class = "is-link">${post.postname}</a></p>
                             </div>
                         </div>
                         <div>
@@ -141,13 +144,10 @@ function displayPost(post) {
                             </div>
                         </div>
 
-                        <div class = "content">
-                            <time>${post.created_at}</time>
-                        </div>
-
                         <div class ="buttons">
                             <button class="button is-success is-small" id = "reply-window-button"><img src="./assets/icons8-composing-mail-32.png"</button>
                             <button class = "button is-small"><img id = "like-button" src="./assets/icons8-heart-32.png"/></button>
+                            <button class = "button is-small edit">Edit</button>
                         </div>
                        
                         <footer class="card-footer">
@@ -175,10 +175,13 @@ function listReplies(repliesArr, postCard){
         replyItem.classList.add("m-3")
         replyItem.innerHTML = `<div class="card-content">
                                         <p>${reply.content}</p>
-                                    <p class = "is-link">
-                                        @${reply.replyname}
-                                    </p>
-                                </div>`
+                                </div>
+                                <footer class="card-footer">
+                                <div class = "content">
+                                    <br>
+                                    @<a class ="is-link" href = "">${reply.replyname}</a>
+                                </div>
+                                </footer>`
 
         mainThread.append(replyItem)
     })
@@ -314,18 +317,19 @@ personalSelector.addEventListener("click", event => {
     .then(filteredSearchArray => displayAllPosts(filteredSearchArray))
 });
 
-// buttonSignIn.addEventListener("click", event => {
-//     heyThereWindow.classList.remove("is-active")
-//     welcomeWindow.classList.add("is-active")
-// });
+buttonSignIn.addEventListener("click", event => {
+    heyThereWindow.classList.remove("is-active")
+    welcomeWindow.classList.add("is-active")
+});
 
 newUserForm.addEventListener("submit", event => {
     event.preventDefault()
-    const newUserData = {username: event.target.querySelector("#new-username").value,
+    const newUserData = {user: {username: event.target.querySelector("#new-username").value,
                         email: event.target.querySelector("#new-email").value,
                         password: event.target.querySelector("#new-password").value,
                         college: event.target.querySelector("#new-college").value,
-                        major: event.target.querySelector("#new-major").value}
+                        major: event.target.querySelector("#new-major").value,
+                        password_confirmation: event.target.querySelector("#new-password-confirmation").value}}
     console.log(newUserData)
     welcomeWindow.classList.remove("is-active")
     scrollTop()
@@ -354,7 +358,8 @@ newPostForm.addEventListener("submit", event =>{
                         postname: event.target.querySelector("#show-user-name").value,
                         tag1: event.target.querySelector("#tag1-input").options[event.target.querySelector("#tag1-input").selectedIndex].value,
                         tag2: event.target.querySelector("#tag2-input").value,
-                        tag3: event.target.querySelector("#tag3-input").value
+                        tag3: event.target.querySelector("#tag3-input").value,
+                        likes: 0
                         }
     console.log(newPostData)
     displayPost(newPostData)
