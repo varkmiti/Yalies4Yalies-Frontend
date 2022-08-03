@@ -40,6 +40,8 @@ const editPostWindow= document.querySelector("#edit-post-window");
 const editPostForm = document.querySelector("#edit-post-form");
 const editReplyForm = document.querySelector("#edit-reply-form");
 
+const userNameDispaly = document.querySelector("#user-name-display");
+
 signInForm.addEventListener("submit", event => {
     event.preventDefault();
     const username = signInForm.querySelector("#sign-in-username").value;
@@ -79,6 +81,7 @@ function replaceDefault() {
     console.log(newReplyNameValue.defaultValue)
     newPostNameValue.defaultValue = `${localStorage.getItem("username")}`;
     console.log(newPostNameValue.defaultValue)
+    userNameDispaly.innerText = `👋, ${localStorage.getItem("username")}`;
     }
 };
 
