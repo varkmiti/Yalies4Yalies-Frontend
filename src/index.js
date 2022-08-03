@@ -35,6 +35,11 @@ const personalSelector = document.querySelector("#personal-selector");
 
 const signInForm = document.querySelector("#sign-in-form");
 
+const editReplyWindow = document.querySelector("#edit-reply-window");
+const editPostWindow= document.querySelector("#edit-post-window");
+const editPostForm = document.querySelector("#edit-post-form");
+const editReplyForm = document.querySelector("#edit-reply-form");
+
 signInForm.addEventListener("submit", event => {
     event.preventDefault();
     const username = signInForm.querySelector("#sign-in-username").value;
@@ -57,6 +62,7 @@ signInForm.addEventListener("submit", event => {
         localStorage.setItem("username", response.user.username)
         localStorage.setItem("user_id", response.user.id)
         heyThereWindow.classList.remove("is-active")
+        replaceDefault();
     } else { alert(response.error) }
 })
 });
@@ -70,10 +76,12 @@ function replaceDefault() {
         newPostNameValue.defaultValue = "Anonymous";
     } else { 
     newReplyNameValue.defaultValue = `${localStorage.getItem("username")}`;
+    console.log(newReplyNameValue.defaultValue)
     newPostNameValue.defaultValue = `${localStorage.getItem("username")}`;
+    console.log(newPostNameValue.defaultValue)
     }
 };
-replaceDefault();
+
 
 // Establishing Fetches
 fetch(POSTS_URL)
@@ -82,7 +90,7 @@ fetch(POSTS_URL)
 
 // Fixing all my life problems in one javascript function
 mainArea.addEventListener("click", event => {
-    let postId = event.target.parentNode.parentNode.parentNode.id
+    const postId = event.target.parentNode.parentNode.parentNode.id
     let postLikes = event.target.parentNode.parentNode.parentNode.dataset.likes;
     postLikes = parseInt(postLikes) + 1;
     if (event.target.id == 'like-button') {
@@ -112,12 +120,68 @@ mainArea.addEventListener("click", event => {
                     };
         
     } else if(event.target.parentNode.id == 'reply-window-button') {
-        
         console.log(postId)
         replyWindow.classList.add("is-active")
         newReply(postId)
-    } ;
+    } else if(event.target.id == 'edit-post-button') { 
+        // debugger
+        console.log(event.target.parentNode.parentElement.id)
+        editPost(event.target.parentNode.parentElement.id)
+    } else if(event.target.id == 'edit-reply-button') {
+        console.log(event.target.parentNode.parentNode.parentNode.dataset.id)
+        editReply(event.target.parentNode.parentNode.parentNode.dataset.id)};
 });
+
+function editReply(replyId) {
+    fetch(REPLIES_URL + `/${replyId}`)
+    .then(res => res.json())
+    .then(reply => 
+        {const editReplyContentBox = document.querySelector("#edit-reply-box");
+        editReplyContentBox.defaultValue = reply.content
+        editReplyWindow.classList.add("is-active")
+        });
+    editReplyForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const editReplyContentBox = document.querySelector("#edit-reply-box");
+        const editReplyData = {content: editReplyContentBox.value}
+        debugger
+        fetch(REPLIES_URL + `/${replyId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+                },
+                body: JSON.stringify(editReplyData)
+                })
+            
+            editReplyWindow.classList.remove("is-active")
+        });
+            }
+
+function editPost(postId) {
+    fetch(POSTS_URL + `/${postId}`)
+    .then(res => res.json())
+    .then(post => {
+        const editContentBox = document.querySelector("#edit-content-box");
+        editContentBox.defaultValue = post.content
+        editPostWindow.classList.add("is-active")
+        });
+        editPostForm.addEventListener("submit", event => {
+            event.preventDefault();
+            const editContentBox = document.querySelector("#edit-content-box");
+            const editPostData = {content: editContentBox.value}
+            fetch(POSTS_URL + `/${postId}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                    },
+                    body: JSON.stringify(editPostData)
+                    })
+                
+                editPostWindow.classList.remove("is-active")
+            });
+                }
 
 function newReply(postId) {
     console.log(`Creating a reply to post ${postId}`)
@@ -163,7 +227,7 @@ function displayPost(post) {
     postCard.classList.add("card")
     postCard.classList.add("is-fluid")
     postCard.classList.add("individual-post")
-    postCard.innerHTML = `
+    if (post.user_id == localStorage.getItem("user_id")) {postCard.innerHTML = `
                     <div class= "m-6 p-5" id = ${post.id} data-likes = ${post.likes}>
                         <div class="media">
                             <div class="media-content">
@@ -188,7 +252,7 @@ function displayPost(post) {
                         <div class ="buttons">
                             <button class="button is-success is-small" id = "reply-window-button"><img src="./assets/icons8-composing-mail-32.png"</button>
                             <button class = "button is-small"><img id = "like-button" src="./assets/icons8-heart-32.png"/></button>
-                            <button class = "button is-small edit">Edit</button>
+                            <button class = "button is-small is-light edit" id = "edit-post-button">Edit</button>
                         </div>
                        
                         <footer class="card-footer">
@@ -199,7 +263,43 @@ function displayPost(post) {
                             </ul>
                         </div>
                         </footer>
-                    </div>`
+                    </div>`}
+                    else {postCard.innerHTML = `
+                    <div class= "m-6 p-5" id = ${post.id} data-likes = ${post.likes}>
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="title is-4">${post.title}</p>
+                                <p class="subtitle is-6">@<a class = "is-link">${post.postname}</a></p>
+                            </div>
+                        </div>
+                        <div>
+                            <h2 id = "likes-display">${post.likes} Likes</h2>
+                        </div>
+                        <div class="tags py-2">
+                                <span class="tag" id = "tag-1">${post.tag1}</span>
+                                <span class="tag" id = "tag-2">${post.tag2}</span>
+                                <span class="tag" id = "tag-3">${post.tag3}</span>
+                            </div>
+                        <div class="content p-3 m-5">
+                            <div>
+                                ${post.content} 
+                            </div>
+                        </div>
+
+                        <div class ="buttons">
+                            <button class="button is-success is-small" id = "reply-window-button"><img src="./assets/icons8-composing-mail-32.png"</button>
+                            <button class = "button is-small"><img id = "like-button" src="./assets/icons8-heart-32.png"/></button>
+                        </div>
+                       
+                        <footer class="card-footer">
+                        <div class = "content" id = "replies">
+                            <br>
+                            <h4>Replies</h3>
+                            <ul id= "main-thread">
+                            </ul>
+                        </div>
+                        </footer>
+                    </div>`}
     tag1Color(postCard);
     repliesFetch(postCard);
     mainArea.prepend(postCard);
@@ -214,15 +314,34 @@ function listReplies(repliesArr, postCard){
         replyItem.classList.add("card")
         replyItem.classList.add("p-5")
         replyItem.classList.add("m-3")
-        replyItem.innerHTML = `<div class="card-content">
+        replyItem.dataset.id = reply.id;
+        console.log(reply.user_id)
+        if (reply.user_id == localStorage.getItem("user_id")) {
+            replyItem.innerHTML = `
+            <div class="card-content">
+                <div>
+                    ${reply.content} 
+                </div>
+            </div>
+            <footer class="card-footer">
+            <br>
+                <div class="content">
+                    @<a class ="is-link" href = "">${reply.replyname}</a>
+                    <button class = "button is-small is-light edit" id = "edit-reply-button">Edit</button>
+                </div>
+            </footer>`
+        } else {
+        replyItem.innerHTML = `<div class="card-content" data-id ="${reply.id}>
                                         <p>${reply.content}</p>
                                 </div>
                                 <footer class="card-footer">
+                                <br>
                                 <div class = "content">
                                     <br>
                                     @<a class ="is-link" href = "">${reply.replyname}</a>
                                 </div>
                                 </footer>`
+        }
 
         mainThread.append(replyItem)
     })
