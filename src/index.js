@@ -1,5 +1,6 @@
 
 // URLs
+// const POSTS_URL = "http://127.0.0.1:3000/posts";
 const POSTS_URL = "http://127.0.0.1:3000/posts";
 const REPLIES_URL = "http://127.0.0.1:3000/replies";
 const USERS_URL = "http://127.0.0.1:3000/users";
@@ -13,7 +14,7 @@ const heyThereWindow = document.querySelector("#hey-there-window");
 const welcomeWindow = document.querySelector("#welcome-window");
 const newUserForm = document.querySelector("#new-user-form");
 
-const buttonWriteWindow = navBar.querySelector("#write-window-button");
+const buttonWriteWindow = document.querySelector("#write-window-button");
 const writeWindow = document.querySelector("#write-window");
 const newPostForm = writeWindow.querySelector("#new-post");
 const closeWriteWindow = writeWindow.querySelector("#close-write-window");
@@ -68,7 +69,8 @@ function newReply(postId) {
     console.log(`Creating a reply to post ${postId}`)
     newReplyForm.addEventListener("submit", event =>{
         event.preventDefault()
-        const newReplyData = {content: event.target.querySelector("#new-reply-content").value, post_id: postId}
+        const newReplyData = {content: event.target.querySelector("#new-reply-content").value, post_id: postId, 
+                            replyname: event.target.querySelector("#new-reply-name").value}
         replyWindow.classList.remove("is-active")
 
         fetch(REPLIES_URL, {
@@ -79,7 +81,12 @@ function newReply(postId) {
                         body: JSON.stringify(newReplyData),
                     })
                 .then(res => console.log(newReplyData))
-    location.reload()
+    const allDisplayedPosts = document.querySelectorAll(".individual-post");
+    allDisplayedPosts.forEach(post => post.remove())
+
+    fetch(POSTS_URL)
+    .then(res => res.json())
+    .then(postArray => displayAllPosts(postArray));
 });
 }
 
@@ -97,14 +104,9 @@ function displayPost(post) {
     postCard.innerHTML = `
                     <div class= "m-6 p-5" id = ${post.id} data-likes = ${post.likes}>
                         <div class="media">
-                            <div class="media-left">
-                                <figure class="image is-48x48">
-                                    <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                                </figure>
-                            </div>
                             <div class="media-content">
                                 <p class="title is-4">${post.title}</p>
-                                <p class="subtitle is-6">@${post.showname}</p>
+                                <p class="subtitle is-6">@${post.postname}</p>
                             </div>
                         </div>
                         <div>
@@ -152,7 +154,12 @@ function listReplies(repliesArr, postCard){
         replyItem.classList.add("card")
         replyItem.classList.add("p-5")
         replyItem.classList.add("m-3")
-        replyItem.textContent = `${reply.content}`
+        replyItem.innerHTML = `<div class="card-content">
+                                        <p>${reply.content}</p>
+                                    <p class = "is-link">
+                                        @${reply.replyname}
+                                    </p>
+                                </div>`
 
         mainThread.append(replyItem)
     })
@@ -271,10 +278,10 @@ humanitiesSelector.addEventListener("click", event => {
     .then(filteredSearchArray => displayAllPosts(filteredSearchArray))
 });
 
-buttonSignIn.addEventListener("click", event => {
-    heyThereWindow.classList.remove("is-active")
-    welcomeWindow.classList.add("is-active")
-});
+// buttonSignIn.addEventListener("click", event => {
+//     heyThereWindow.classList.remove("is-active")
+//     welcomeWindow.classList.add("is-active")
+// });
 
 newUserForm.addEventListener("submit", event => {
     event.preventDefault()
@@ -299,18 +306,21 @@ newUserForm.addEventListener("submit", event => {
 });
 
 buttonWriteWindow.addEventListener("click", event => {
+    //  console.log("buttonWriteWindow")
     writeWindow.classList.add("is-active")
 });
 
 newPostForm.addEventListener("submit", event =>{
     event.preventDefault()
+    // debugger
     const newPostData = {title: event.target.querySelector("#new-title").value,
                         content: event.target.querySelector("#new-write-content").value,
-                        likes: 0, 
-                        showname: event.target.querySelector("#show-user-name").value,
+                        postname: event.target.querySelector("#show-user-name").value,
                         tag1: event.target.querySelector("#tag1-input").options[event.target.querySelector("#tag1-input").selectedIndex].value,
                         tag2: event.target.querySelector("#tag2-input").value,
-                        tag3: event.target.querySelector("#tag3-input").value}
+                        tag3: event.target.querySelector("#tag3-input").value
+                        }
+    console.log(newPostData)
     displayPost(newPostData)
 
     scrollTop()
@@ -322,7 +332,8 @@ newPostForm.addEventListener("submit", event =>{
         },
           body: JSON.stringify(newPostData),
         })
-    .then(res => console.log(newPostData))
+    
+    writeWindow.classList.remove("is-active")
 });
 
 closeWriteWindow.addEventListener("click", event => {

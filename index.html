@@ -4,11 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta name="google-signin-client_id" content="596585597319-is7s7vss6gedbr9vtgi84nu1eqq584uv.apps.googleusercontent.com"> -->
     <title>Yalies4Yalies</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css" rel="stylesheet">
+    <!-- <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="app/views/homepage/src/index.js"></script> -->
   </head>
   <body>
-    
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand is-primary">
         <div id="navbarBasicExample" class="navbar-menu">
@@ -221,7 +223,7 @@
           <div class="field">
             <label class="label">Displayed Author</label>
             <div class="control">
-              <input class="input" type="text" placeholder="Text input" value = "This name will be shown to other Y4Y Users" id ="reply-user-name">
+              <input class="input" type="text" placeholder="Text input" value = "This name will be shown to other Y4Y Users" id ="new-reply-name">
           </div>
 
           <br>
@@ -325,55 +327,30 @@
     </div>
 
     <!-- Hey there!-->
-    <div class = "modal is-active" id = "hey-there-window"> 
+    <div class = "modal" id = "hey-there-window"> 
       <div class="modal-background" id = "hey-there-window-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">👋, Welcome Back!</p>
         </header>
         <section class="modal-card-body">
-
-        <form id ="existing-user-sign-in">
-          <div class="field">
-            <label class="label">Email</label>
-              <input class="input" type="email" placeholder="Email" id = "existing-user-email">
-              <span class="icon is-small is-left">
-                <i class="fas fa-envelope"></i>
-              </span>
-              <span class="icon is-small is-right">
-                <i class="fas fa-check"></i>
-              </span>
-            </p>
-          </div>
-    
-          <div class="field">
-            <label class="label">Password</label>
-              <input class="input" type="password" placeholder="Password" id ="existing-user-password">
-              <span class="icon is-small is-left">
-                <i class="fas fa-lock"></i>
-              </span>
-            </p>
-          </div>
-
-          <div class="field is-grouped ">
-            <div class="control">
-              <button class="button is-success"><strong>Sign In</strong></button>
-            </div>
-          </div>
-        </form>
+        <!-- <div class="g_id_signin" data-type="standard"></div>
+            <!-- <script src="https://accounts.google.com/gsi/client"></script>
+            <div id="g_id_onload"
+                data-client_id="596585597319-is7s7vss6gedbr9vtgi84nu1eqq584uv.apps.googleusercontent.com"
+                data-callback="handleCredentialResponse">
+            </div> --> 
         </section>
         <footer class="modal-card-foot">
           <div class="field is-grouped ">
-            <div class="control">
-            <p>Don't have an account? Get started below!</p>
-              <button class = "button is-danger" id = "sign-in-window-button"><strong>Sign Up</strong></button>
-            </div>
+            <div class="control"></div>
           </div>
         </footer>
       </div>
     </div>
   </div>
 
-    <script defer src="./src/index.js" src="https://apis.google.com/js/platform.js" src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+    <script src="./src/index.js" async defer></script>
+    <!-- src="https://apis.google.com/js/platform.js" src="https://apis.google.com/js/platform.js?onload=init" -->
   </body>
 </html>
