@@ -51,13 +51,29 @@ signInForm.addEventListener("submit", event => {
         })
     })
     .then(res => res.json())
-    .then(console.log.user)
-    .then(resp => localStorage.setItem("user_id", resp.user.id));
-    heyThereWindow.classList.remove("is-active");
+    .then(response => {
+        if (response.error != 'Invalid username or password'){
+        console.log(response)
+        localStorage.setItem("username", response.user.username)
+        localStorage.setItem("user_id", response.user.id)
+        heyThereWindow.classList.remove("is-active")
+    } else { alert(response.error) }
+})
 });
 
+const newReplyNameValue = document.querySelector("#new-reply-name"); 
+const newPostNameValue = document.querySelector("#show-user-name");
 
-
+function replaceDefault() {
+    if (localStorage.getItem("username") == null) {
+        newReplyNameValue.defaultValue = "Anonymous";
+        newPostNameValue.defaultValue = "Anonymous";
+    } else { 
+    newReplyNameValue.defaultValue = `${localStorage.getItem("username")}`;
+    newPostNameValue.defaultValue = `${localStorage.getItem("username")}`;
+    }
+};
+replaceDefault();
 
 // Establishing Fetches
 fetch(POSTS_URL)
@@ -95,7 +111,6 @@ mainArea.addEventListener("click", event => {
                         likesCount.textContent= `${postLikes} Likes`
                     };
         
-        
     } else if(event.target.parentNode.id == 'reply-window-button') {
         
         console.log(postId)
@@ -109,7 +124,8 @@ function newReply(postId) {
     newReplyForm.addEventListener("submit", event =>{
         event.preventDefault()
         const newReplyData = {content: event.target.querySelector("#new-reply-content").value, post_id: postId, 
-                            replyname: event.target.querySelector("#new-reply-name").value}
+                            replyname: event.target.querySelector("#new-reply-name").value,
+                            user_id: parseInt(localStorage.getItem("user_id"))}
         replyWindow.classList.remove("is-active")
 
         fetch(REPLIES_URL, {
@@ -384,8 +400,9 @@ newPostForm.addEventListener("submit", event =>{
                         tag1: event.target.querySelector("#tag1-input").options[event.target.querySelector("#tag1-input").selectedIndex].value,
                         tag2: event.target.querySelector("#tag2-input").value,
                         tag3: event.target.querySelector("#tag3-input").value,
-                        likes: 0
-                        }
+                        likes: 0,
+                        user_id: parseInt(localStorage.getItem("user_id"))}
+
     console.log(newPostData)
     displayPost(newPostData)
 
