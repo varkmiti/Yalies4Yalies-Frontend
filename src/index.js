@@ -50,6 +50,7 @@ mainArea.addEventListener("click", event => {
                         const likesCount = event.target.parentNode.parentNode.parentNode.querySelector("#likes-display") 
                         event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-filled-heart-32.png"/>`
                         likesCount.textContent= `${postLikes} Likes`
+
                     } else {
                         console.log("unlike")
                         const likesCount = event.target.parentNode.parentNode.parentNode.querySelector("#likes-display") 
@@ -57,6 +58,16 @@ mainArea.addEventListener("click", event => {
                         postLikes = parseInt(postLikes) - 1;
                         likesCount.textContent= `${postLikes} Likes`
                     };
+        const postData = {likes: postLikes, id: postId}
+
+        fetch(POSTS_URL + `/${postId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(postData)
+        });
         
     } else if(event.target.parentNode.id == 'reply-window-button') {
         console.log(postId)
