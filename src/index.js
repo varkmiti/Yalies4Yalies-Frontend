@@ -361,15 +361,17 @@ function listReplies(repliesArr, postCard){
                 </div>
             </footer>`
         } else {
-        replyItem.innerHTML = `<div class="card-content" data-id ="${reply.id}>
-                                        <p>${reply.content}</p>
+        replyItem.innerHTML = `<div class="card-content">
+                                    <div id= "reply-content-${reply.id}" >
+                                        ${reply.content} 
+                                    </div>
                                 </div>
                                 <footer class="card-footer">
                                 <br>
-                                <div class = "content">
-                                    <br>
-                                    @<a class ="is-link">${reply.replyname}</a>
-                                </div>
+                                    <div class = "content">
+                                        <br>
+                                        @<a class ="is-link">${reply.replyname}</a>
+                                    </div>
                                 </footer>`
         }
 
