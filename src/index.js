@@ -509,12 +509,13 @@ buttonSignIn.addEventListener("click", event => {
 
 newUserForm.addEventListener("submit", event => {
     event.preventDefault()
-    const newUserData = {user: {username: event.target.querySelector("#new-username").value,
+    debugger
+    const newUserData = {username: event.target.querySelector("#new-username").value,
                         email: event.target.querySelector("#new-email").value,
                         password: event.target.querySelector("#new-password").value,
-                        college: event.target.querySelector("#new-college").value,
+                        college: event.target.querySelector("#new-college").options[event.target.querySelector("#new-college").selectedIndex].value,
                         major: event.target.querySelector("#new-major").value,
-                        password_confirmation: event.target.querySelector("#new-password-confirmation").value}}
+                        password_confirmation: event.target.querySelector("#new-password-confirmation").value}
     console.log(newUserData)
     welcomeWindow.classList.remove("is-active")
     scrollTop()
