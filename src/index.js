@@ -553,7 +553,8 @@ newPostForm.addEventListener("submit", event =>{
                         tag2: event.target.querySelector("#tag2-input").value,
                         tag3: event.target.querySelector("#tag3-input").value,
                         likes: 0,
-                        user_id: parseInt(localStorage.getItem("user_id"))}
+                        user_id: parseInt(localStorage.getItem("user_id")),
+                        view_replies: document.querySelector("#view-replies").checked,}
 
     console.log(newPostData)
     displayPost(newPostData)
