@@ -42,6 +42,13 @@ const editReplyForm = document.querySelector("#edit-reply-form");
 
 const userNameDispaly = document.querySelector("#user-name-display");
 
+const closeReplyWindow2 = document.querySelector("#reply-2-window-background");
+const closeReplyButton2 = document.querySelector('#close-2-reply-window');
+const closeEditPostWindow = document.querySelector("#edit-write-window-background-2");
+const closeEditPostButton = document.querySelector("#edit-close-write-window-2");
+
+
+
 signInForm.addEventListener("submit", event => {
     event.preventDefault();
     const username = signInForm.querySelector("#sign-in-username").value;
@@ -587,6 +594,25 @@ closeReplyWindow.addEventListener("click", event => {
 replyWindowBackground.addEventListener("click", event => {
     replyWindow.classList.remove("is-active")
 });
+
+closeReplyWindow2.addEventListener("click", event => {
+    editReplyWindow.classList.remove("is-active")
+});
+
+closeReplyButton2.addEventListener("click", event => {
+    editReplyWindow.classList.remove("is-active")
+}
+);
+
+closeEditPostWindow.addEventListener("click", event => {
+    editPostWindow.classList.remove("is-active")
+}
+);
+
+closeEditPostButton.addEventListener("click", event => {
+    editPostWindow.classList.remove("is-active")
+}
+);
 
 // Utility Functions
 function scrollTop() {
