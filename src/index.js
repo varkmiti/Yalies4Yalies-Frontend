@@ -130,15 +130,6 @@ mainArea.addEventListener("click", event => {
                         .then(res => res.json())
                         .then(response => console.log(response))
 
-                        // fetch(POSTS_URL + `/${postId}`, {
-                        //     method: "PATCH",
-                        //     headers: {
-                        //         "Content-Type": "application/json",
-                        //         "Accept": "application/json"
-                        //     },
-                        //     body: JSON.stringify(postData)
-                        // });
-
                     } else {
                         console.log("unlike")
                         const likesCount = event.target.parentNode.parentNode.parentNode.querySelector("#likes-display") 
@@ -172,7 +163,7 @@ function editReply(replyId) {
         event.preventDefault();
         const editReplyContentBox = document.querySelector("#edit-reply-box");
         const editReplyData = {content: editReplyContentBox.value}
-        debugger
+        
         fetch(REPLIES_URL + `/${replyId}`, {
             method: "PATCH",
             headers: {
@@ -182,8 +173,12 @@ function editReply(replyId) {
                 body: JSON.stringify(editReplyData)
                 })
             
+            
             editReplyWindow.classList.remove("is-active")
+            const editedReplyContent = document.querySelector(`#reply-content-${replyId}`)
+            editedReplyContent.innerText = editReplyData.content
         });
+        
             }
 
 function editPost(postId) {
@@ -197,7 +192,8 @@ function editPost(postId) {
         editPostForm.addEventListener("submit", event => {
             event.preventDefault();
             const editContentBox = document.querySelector("#edit-content-box");
-            const editPostData = {content: editContentBox.value}
+            const likesCount = event.target.parentNode.parentNode.parentNode.querySelector("#likes-display").textContent 
+            const editPostData = {content: editContentBox.value, likes: likesCount}
             fetch(POSTS_URL + `/${postId}`, {
                 method: "PATCH",
                 headers: {
@@ -347,7 +343,7 @@ function listReplies(repliesArr, postCard){
         if (reply.user_id == localStorage.getItem("user_id")) {
             replyItem.innerHTML = `
             <div class="card-content">
-                <div>
+                <div id= "reply-content-${reply.id}" >
                     ${reply.content} 
                 </div>
             </div>
