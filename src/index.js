@@ -64,10 +64,15 @@ signInForm.addEventListener("submit", event => {
         localStorage.setItem("username", response.user.username)
         localStorage.setItem("user_id", response.user.id)
         heyThereWindow.classList.remove("is-active")
+        const allDisplayedPosts = document.querySelectorAll(".individual-post");
+        allDisplayedPosts.forEach(post => post.remove())
+        fetch(POSTS_URL)
+        .then(res => res.json())
+        .then(postsArr => displayAllPosts(postsArr))
         replaceDefault();
+
     } else { alert(response.error) }
-})
-});
+    })});
 
 const newReplyNameValue = document.querySelector("#new-reply-name"); 
 const newPostNameValue = document.querySelector("#show-user-name");
@@ -517,7 +522,6 @@ newUserForm.addEventListener("submit", event => {
                         major: event.target.querySelector("#new-major").value,
                         password_confirmation: event.target.querySelector("#new-password-confirmation").value}
     console.log(newUserData)
-    welcomeWindow.classList.remove("is-active")
     scrollTop()
     
     fetch(USERS_URL, {
@@ -528,7 +532,8 @@ newUserForm.addEventListener("submit", event => {
         body: JSON.stringify(newUserData),
     })
     .then(res => console.log(newUserData))
-
+    welcomeWindow.classList.remove("is-active")
+    heyThereWindow.classList.add("is-active")
 });
 
 buttonWriteWindow.addEventListener("click", event => {
