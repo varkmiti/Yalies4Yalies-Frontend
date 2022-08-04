@@ -100,7 +100,7 @@ mainArea.addEventListener("click", event => {
         if (event.target.parentNode.innerHTML == `<img id="like-button" src="./assets/icons8-heart-32.png">`) {
                         console.log("i like")
                         const likesCount = event.target.parentNode.parentNode.parentNode.querySelector("#likes-display") 
-                        const postContent = event.target.parentNode.parentNode.parentNode.querySelector("#post-content").innerText
+                        const postContent = event.target.parentNode.parentNode.parentNode.querySelector(`#post-content-${postId}`).innerText
                         event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-filled-heart-32.png"/>`
                         likesCount.textContent= `${postLikes} Likes`
                         const postData = {likes: postLikes, 
@@ -145,7 +145,8 @@ mainArea.addEventListener("click", event => {
     } else if(event.target.id == 'edit-post-button') { 
         // debugger
         console.log(event.target.parentNode.parentElement.id)
-        editPost(event.target.parentNode.parentElement.id)
+        editPost(event.target.parentNode.parentElement.id, event.target.parentNode.parentNode.parentNode.querySelector("#likes-display").textContent 
+        )
     } else if(event.target.id == 'edit-reply-button') {
         console.log(event.target.parentNode.parentNode.parentNode.dataset.id)
         editReply(event.target.parentNode.parentNode.parentNode.dataset.id)};
@@ -181,7 +182,7 @@ function editReply(replyId) {
         
             }
 
-function editPost(postId) {
+function editPost(postId, likesCount) {
     fetch(POSTS_URL + `/${postId}`)
     .then(res => res.json())
     .then(post => {
@@ -192,8 +193,7 @@ function editPost(postId) {
         editPostForm.addEventListener("submit", event => {
             event.preventDefault();
             const editContentBox = document.querySelector("#edit-content-box");
-            const likesCount = event.target.parentNode.parentNode.parentNode.querySelector("#likes-display").textContent 
-            const editPostData = {content: editContentBox.value, likes: likesCount}
+            const editPostData = {content: editContentBox.value, likes: likesCount.split(" ")[0]}
             fetch(POSTS_URL + `/${postId}`, {
                 method: "PATCH",
                 headers: {
@@ -202,7 +202,8 @@ function editPost(postId) {
                     },
                     body: JSON.stringify(editPostData)
                     })
-                
+                const editedPostContent = document.querySelector(`#post-content-${postId}`)
+                editedPostContent.innerText = editPostData.content
                 editPostWindow.classList.remove("is-active")
             });
                 }
@@ -268,7 +269,7 @@ function displayPost(post) {
                                 <span class="tag" id = "tag-3">${post.tag3}</span>
                             </div>
                         <div class="content p-3 m-5">
-                            <div id = "post-content">
+                            <div id = "post-content-${post.id}">
                                 ${post.content} 
                             </div>
                         </div>
@@ -305,7 +306,7 @@ function displayPost(post) {
                                 <span class="tag" id = "tag-3">${post.tag3}</span>
                             </div>
                         <div class="content p-3 m-5">
-                            <div id ="post-content">
+                            <div id ="post-content-${post.id}">
                                 ${post.content} 
                             </div>
                         </div>
