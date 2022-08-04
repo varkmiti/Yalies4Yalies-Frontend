@@ -1,8 +1,8 @@
-
 // URLs
 const POSTS_URL = "http://127.0.0.1:3000/posts";
 const REPLIES_URL = "http://127.0.0.1:3000/replies";
 const USERS_URL = "http://127.0.0.1:3000/users";
+const INTERACTIONS_URL = "http://127.0.0.1:3000/interactions";
 
 // DOM Elements
 const mainArea = document.querySelector("#main");
@@ -100,19 +100,44 @@ mainArea.addEventListener("click", event => {
         if (event.target.parentNode.innerHTML == `<img id="like-button" src="./assets/icons8-heart-32.png">`) {
                         console.log("i like")
                         const likesCount = event.target.parentNode.parentNode.parentNode.querySelector("#likes-display") 
+                        const postContent = event.target.parentNode.parentNode.parentNode.querySelector("#post-content").innerText
                         event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-filled-heart-32.png"/>`
                         likesCount.textContent= `${postLikes} Likes`
+                        const postData = {likes: postLikes, 
+                                            post_id: postId, 
+                                            content: postContent}
+                        const interactionsData = {user_id: localStorage.getItem("user_id"), 
+                                                    post_id: postId, 
+                                                    interaction: "like"}
 
-                        const postData = {likes: postLikes, id: postId}
-
+                        fetch(`${INTERACTIONS_URL}`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(interactionsData)
+                        })
+                        .then(res => res.json())
+                        .then(response => console.log(response))
+                        
                         fetch(POSTS_URL + `/${postId}`, {
                             method: "PATCH",
                             headers: {
-                                "Content-Type": "application/json",
-                                "Accept": "application/json"
+                                "Content-Type": "application/json"
                             },
                             body: JSON.stringify(postData)
-                        });
+                        })
+                        .then(res => res.json())
+                        .then(response => console.log(response))
+
+                        // fetch(POSTS_URL + `/${postId}`, {
+                        //     method: "PATCH",
+                        //     headers: {
+                        //         "Content-Type": "application/json",
+                        //         "Accept": "application/json"
+                        //     },
+                        //     body: JSON.stringify(postData)
+                        // });
 
                     } else {
                         console.log("unlike")
@@ -247,7 +272,7 @@ function displayPost(post) {
                                 <span class="tag" id = "tag-3">${post.tag3}</span>
                             </div>
                         <div class="content p-3 m-5">
-                            <div>
+                            <div id = "post-content">
                                 ${post.content} 
                             </div>
                         </div>
@@ -284,7 +309,7 @@ function displayPost(post) {
                                 <span class="tag" id = "tag-3">${post.tag3}</span>
                             </div>
                         <div class="content p-3 m-5">
-                            <div>
+                            <div id ="post-content">
                                 ${post.content} 
                             </div>
                         </div>
@@ -329,7 +354,7 @@ function listReplies(repliesArr, postCard){
             <footer class="card-footer">
             <br>
                 <div class="content">
-                    @<a class ="is-link" href = "">${reply.replyname}</a>
+                    @<a class ="is-link">${reply.replyname}</a>
                     <button class = "button is-small is-light edit" id = "edit-reply-button">Edit</button>
                 </div>
             </footer>`
@@ -341,7 +366,7 @@ function listReplies(repliesArr, postCard){
                                 <br>
                                 <div class = "content">
                                     <br>
-                                    @<a class ="is-link" href = "">${reply.replyname}</a>
+                                    @<a class ="is-link">${reply.replyname}</a>
                                 </div>
                                 </footer>`
         }
