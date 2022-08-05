@@ -32,23 +32,18 @@ const chemSelector = document.querySelector("#chemistry-selector");
 const socialSciencesSelector = document.querySelector("#social-sciences-selector");
 const humanitiesSelector = document.querySelector("#humanities-selector");
 const personalSelector = document.querySelector("#personal-selector");
-
 const signInForm = document.querySelector("#sign-in-form");
-
 const editReplyWindow = document.querySelector("#edit-reply-window");
 const editPostWindow= document.querySelector("#edit-post-window");
 const editPostForm = document.querySelector("#edit-post-form");
 const editReplyForm = document.querySelector("#edit-reply-form");
-
 const userNameDispaly = document.querySelector("#user-name-display");
-
 const closeReplyWindow2 = document.querySelector("#reply-2-window-background");
 const closeReplyButton2 = document.querySelector('#close-2-reply-window');
 const closeEditPostWindow = document.querySelector("#edit-write-window-background-2");
 const closeEditPostButton = document.querySelector("#edit-close-write-window-2");
 
-
-
+// Sign In Form
 signInForm.addEventListener("submit", event => {
     event.preventDefault();
     const username = signInForm.querySelector("#sign-in-username").value;
@@ -151,18 +146,13 @@ mainArea.addEventListener("click", event => {
                     };
         
     } else if(event.target.parentNode.id == 'reply-window-button') {
-        console.log(postId)
-        debugger
         replyWindow.classList.add("is-active")
         newReply(postId)        
 
     } else if(event.target.id == 'edit-post-button') { 
-        // debugger
-        console.log(event.target.parentNode.parentElement.id)
         editPost(event.target.parentNode.parentElement.id, event.target.parentNode.parentNode.parentNode.querySelector("#likes-display").textContent 
         )
     } else if(event.target.id == 'edit-reply-button') {
-        console.log(event.target.parentNode.parentNode.parentNode.dataset.id)
         editReply(event.target.parentNode.parentNode.parentNode.dataset.id)};
 });
 
@@ -194,7 +184,7 @@ function editReply(replyId) {
             editedReplyContent.innerText = editReplyData.content
         });
         
-            }
+}
 
 function editPost(postId, likesCount) {
     fetch(POSTS_URL + `/${postId}`)
@@ -222,12 +212,9 @@ function editPost(postId, likesCount) {
             });
                 }
 function newReply(postId) {
-    debugger
     newReplyForm.addEventListener("submit", event => {
     event.preventDefault();
     funNewReply(event, postId)}, { once: true });
-    
-
 }
 
 let funNewReply = (event, postId) => {
@@ -260,61 +247,6 @@ let funNewReply = (event, postId) => {
                 .then(reply => listOneReply(reply))
     newReplyForm.removeEventListener(newReplyForm.submit, funNewReply);
 };
-// function newReply(postId) {
-//     debugger
-//     newReplyForm.addEventListener("submit", event =>{
-//         // event.preventDefault()
-//         // const newReplyData = {content: event.target.querySelector("#new-reply-content").value, post_id: postId, 
-//         //                     replyname: event.target.querySelector("#new-reply-name").value,
-//         //                     user_id: parseInt(localStorage.getItem("user_id"))}
-//         // replyWindow.classList.remove("is-active")
-
-//         // const interactionsData = {user_id: localStorage.getItem("user_id"), 
-//         //                                             post_id: postId, 
-//         //                                             occured: "reply"}
-
-//         // fetch(`${INTERACTIONS_URL}`, {
-//         //     method: "POST",
-//         //     headers: {
-//         //         "Content-Type": "application/json"
-//         //     },
-//         //     body: JSON.stringify(interactionsData)
-//         // });
-
-//         // fetch(REPLIES_URL, {
-//         //             method: 'POST',
-//         //             headers: {
-//         //                 'Content-Type': 'application/json',
-//         //             },
-//         //                 body: JSON.stringify(newReplyData),
-//         //             })
-//         //         .then(res => res.json())
-//         //         .then(reply => listOneReply(reply))
-//     //                 let replyItem = document.createElement("div")
-//     //                 replyItem.classList.add("card")
-//     //                 replyItem.classList.add("p-5")
-//     //                 replyItem.classList.add("m-3")
-//     //                 replyItem.dataset.id = reply.id;
-//     //                 reply.user_id == localStorage.getItem("user_id")
-//     //                     replyItem.innerHTML = `
-//     //                     <div class="card-content">
-//     //                         <div id= "reply-content-${reply.id}" >
-//     //                             ${reply.content} 
-//     //                         </div>
-//     //                     </div>
-//     //                     <footer class="card-footer">
-//     //                     <br>
-//     //                         <div class="content">
-//     //                             @<a class ="is-link">${reply.replyname}</a>
-//     //                             <button class = "button is-small is-light edit" id = "edit-reply-button">Edit</button>
-//     //                         </div>
-//     //                     </footer>`
-//     //                     const postMainThread = document.querySelector(`#main-thread-${postId}`)
-//     //                     postMainThread.append(replyItem)
-//     // })
-// }
-
-// )};
 
 // Display Functions
 function displayAllPosts(postArray) {
@@ -513,7 +445,7 @@ function filterByPersonal(postArray) {
     return postArray.filter(post => post.tag1 == "Personal")
 }
 
-// Event Listeners
+// Search Listeners
 searchBar.addEventListener("input", event => {
     const allDisplayedPosts = document.querySelectorAll(".individual-post");
     allDisplayedPosts.forEach(post => post.remove())
@@ -586,6 +518,7 @@ personalSelector.addEventListener("click", event => {
     .then(filteredSearchArray => displayAllPosts(filteredSearchArray))
 });
 
+// Modal Buttons
 buttonSignIn.addEventListener("click", event => {
     heyThereWindow.classList.remove("is-active")
     welcomeWindow.classList.add("is-active")
@@ -593,7 +526,6 @@ buttonSignIn.addEventListener("click", event => {
 
 newUserForm.addEventListener("submit", event => {
     event.preventDefault()
-    // debugger
     const newUserData = {username: event.target.querySelector("#new-username").value,
                         email: event.target.querySelector("#new-email").value,
                         password: event.target.querySelector("#new-password").value,
@@ -616,13 +548,11 @@ newUserForm.addEventListener("submit", event => {
 });
 
 buttonWriteWindow.addEventListener("click", event => {
-    //  console.log("buttonWriteWindow")
     writeWindow.classList.add("is-active")
 });
 
 newPostForm.addEventListener("submit", event =>{
     event.preventDefault()
-    // debugger
     const newPostData = {title: event.target.querySelector("#new-title").value,
                         content: event.target.querySelector("#new-write-content").value,
                         postname: event.target.querySelector("#show-user-name").value,
