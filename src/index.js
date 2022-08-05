@@ -62,7 +62,6 @@ signInForm.addEventListener("submit", event => {
     .then(res => res.json())
     .then(response => {
         if (response.error != 'Invalid username or password'){
-        console.log(response)
         localStorage.setItem("username", response.user.username)
         localStorage.setItem("user_id", response.user.id)
         heyThereWindow.classList.remove("is-active")
@@ -85,9 +84,7 @@ function replaceDefault() {
         newPostNameValue.defaultValue = "Anonymous";
     } else { 
     newReplyNameValue.defaultValue = `${localStorage.getItem("username")}`;
-    console.log(newReplyNameValue.defaultValue)
     newPostNameValue.defaultValue = `${localStorage.getItem("username")}`;
-    console.log(newPostNameValue.defaultValue)
     userNameDispaly.innerText = `👋, ${localStorage.getItem("username")}`;
     }
 };
@@ -105,7 +102,6 @@ mainArea.addEventListener("click", event => {
     postLikes = parseInt(postLikes) + 1;
     if (event.target.id == 'like-button') {
         if (event.target.parentNode.innerHTML == `<img id="like-button" src="./assets/icons8-heart-32.png">`) {
-                        console.log("i like")
                         const likesCount = event.target.parentNode.parentNode.parentNode.querySelector("#likes-display") 
                         const postContent = event.target.parentNode.parentNode.parentNode.querySelector(`#post-content-${postId}`).innerText
                         event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-filled-heart-32.png"/>`
@@ -125,7 +121,6 @@ mainArea.addEventListener("click", event => {
                             body: JSON.stringify(interactionsData)
                         })
                         .then(res => res.json())
-                        .then(response => console.log(response))
                         
                         fetch(POSTS_URL + `/${postId}`, {
                             method: "PATCH",
@@ -135,10 +130,8 @@ mainArea.addEventListener("click", event => {
                             body: JSON.stringify(postData)
                         })
                         .then(res => res.json())
-                        .then(response => console.log(response))
 
                     } else {
-                        console.log("unlike")
                         const likesCount = event.target.parentNode.parentNode.parentNode.querySelector("#likes-display") 
                         event.target.parentNode.innerHTML = `<img id = "like-button" src="./assets/icons8-heart-32.png"/>`
                         postLikes = parseInt(postLikes) - 1;
@@ -350,7 +343,6 @@ function listOneReply(reply) {
     replyItem.classList.add("p-5")
     replyItem.classList.add("m-3")
     replyItem.dataset.id = reply.id;
-    console.log(reply.user_id)
     if (reply.user_id == localStorage.getItem("user_id")) {
         replyItem.innerHTML = `
         <div class="card-content">
@@ -532,7 +524,6 @@ newUserForm.addEventListener("submit", event => {
                         college: event.target.querySelector("#new-college").options[event.target.querySelector("#new-college").selectedIndex].value,
                         major: event.target.querySelector("#new-major").value,
                         password_confirmation: event.target.querySelector("#new-password-confirmation").value}
-    console.log(newUserData)
     scrollTop()
     
     fetch(USERS_URL, {
@@ -542,7 +533,6 @@ newUserForm.addEventListener("submit", event => {
         },
         body: JSON.stringify(newUserData),
     })
-    .then(res => console.log(newUserData))
     welcomeWindow.classList.remove("is-active")
     heyThereWindow.classList.add("is-active")
 });
@@ -563,7 +553,6 @@ newPostForm.addEventListener("submit", event =>{
                         user_id: parseInt(localStorage.getItem("user_id")),
                         view_replies: document.querySelector("#view-replies").checked,}
 
-    console.log(newPostData)
 
     scrollTop()
 
