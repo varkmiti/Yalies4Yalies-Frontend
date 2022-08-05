@@ -221,15 +221,33 @@ function editPost(postId, likesCount) {
                 editPostWindow.classList.remove("is-active")
             });
                 }
-
 function newReply(postId) {
-    console.log(`Creating a reply to post ${postId}`)
-    newReplyForm.addEventListener("submit", event =>{
+    debugger
+    newReplyForm.addEventListener("submit", event => {
+    event.preventDefault();
+    funNewReply(event, postId)}, { once: true });
+    
+
+}
+
+let funNewReply = (event, postId) => {
         event.preventDefault()
         const newReplyData = {content: event.target.querySelector("#new-reply-content").value, post_id: postId, 
                             replyname: event.target.querySelector("#new-reply-name").value,
                             user_id: parseInt(localStorage.getItem("user_id"))}
         replyWindow.classList.remove("is-active")
+
+        const interactionsData = {user_id: localStorage.getItem("user_id"), 
+                                                    post_id: postId, 
+                                                    occured: "reply"}
+
+        fetch(`${INTERACTIONS_URL}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(interactionsData)
+        });
 
         fetch(REPLIES_URL, {
                     method: 'POST',
@@ -238,55 +256,65 @@ function newReply(postId) {
                     },
                         body: JSON.stringify(newReplyData),
                     })
-                .then(res => console.log(newReplyData))
-    debugger
+                .then(res => res.json())
+                .then(reply => listOneReply(reply))
+    newReplyForm.removeEventListener(newReplyForm.submit, funNewReply);
+};
+// function newReply(postId) {
+//     debugger
+//     newReplyForm.addEventListener("submit", event =>{
+//         // event.preventDefault()
+//         // const newReplyData = {content: event.target.querySelector("#new-reply-content").value, post_id: postId, 
+//         //                     replyname: event.target.querySelector("#new-reply-name").value,
+//         //                     user_id: parseInt(localStorage.getItem("user_id"))}
+//         // replyWindow.classList.remove("is-active")
 
-    const reply = fetch(REPLIES_URL).then(res => res.json()).then(repliesArray => repliesArray[-1])
-    debugger
-    const postMainThread = document.querySelector(`#main-thread-${postId}`)
-    let replyItem = document.createElement("div")
-    replyItem.classList.add("card")
-    replyItem.classList.add("p-5")
-    replyItem.classList.add("m-3")
-    replyItem.dataset.id = reply.id; 
-    if (reply.user_id == localStorage.getItem("user_id")) {
-        replyItem.innerHTML = `
-        <div class="card-content">
-            <div id= "reply-content-${reply.id}" >
-                ${reply.content} 
-            </div>
-        </div>
-        <footer class="card-footer">
-        <br>
-            <div class="content">
-                @<a class ="is-link">${reply.replyname}</a>
-                <button class = "button is-small is-light edit" id = "edit-reply-button">Edit</button>
-            </div>
-        </footer>`
-    } else {
-    replyItem.innerHTML = `<div class="card-content">
-                                <div id= "reply-content-${reply.id}" >
-                                    ${reply.content} 
-                                </div>
-                            </div>
-                            <footer class="card-footer">
-                            <br>
-                                <div class = "content">
-                                    <br>
-                                    @<a class ="is-link">${reply.replyname}</a>
-                                </div>
-                            </footer>`
-    }
+//         // const interactionsData = {user_id: localStorage.getItem("user_id"), 
+//         //                                             post_id: postId, 
+//         //                                             occured: "reply"}
 
-    postmainThread.append(replyItem)
-});
-// const allDisplayedPosts = document.querySelectorAll(".individual-post");
-//     allDisplayedPosts.forEach(post => post.remove())
+//         // fetch(`${INTERACTIONS_URL}`, {
+//         //     method: "POST",
+//         //     headers: {
+//         //         "Content-Type": "application/json"
+//         //     },
+//         //     body: JSON.stringify(interactionsData)
+//         // });
 
-//     fetch(POSTS_URL)
-//     .then(res => res.json())
-//     .then(postArray => displayAllPosts(postArray));
-}
+//         // fetch(REPLIES_URL, {
+//         //             method: 'POST',
+//         //             headers: {
+//         //                 'Content-Type': 'application/json',
+//         //             },
+//         //                 body: JSON.stringify(newReplyData),
+//         //             })
+//         //         .then(res => res.json())
+//         //         .then(reply => listOneReply(reply))
+//     //                 let replyItem = document.createElement("div")
+//     //                 replyItem.classList.add("card")
+//     //                 replyItem.classList.add("p-5")
+//     //                 replyItem.classList.add("m-3")
+//     //                 replyItem.dataset.id = reply.id;
+//     //                 reply.user_id == localStorage.getItem("user_id")
+//     //                     replyItem.innerHTML = `
+//     //                     <div class="card-content">
+//     //                         <div id= "reply-content-${reply.id}" >
+//     //                             ${reply.content} 
+//     //                         </div>
+//     //                     </div>
+//     //                     <footer class="card-footer">
+//     //                     <br>
+//     //                         <div class="content">
+//     //                             @<a class ="is-link">${reply.replyname}</a>
+//     //                             <button class = "button is-small is-light edit" id = "edit-reply-button">Edit</button>
+//     //                         </div>
+//     //                     </footer>`
+//     //                     const postMainThread = document.querySelector(`#main-thread-${postId}`)
+//     //                     postMainThread.append(replyItem)
+//     // })
+// }
+
+// )};
 
 // Display Functions
 function displayAllPosts(postArray) {
@@ -384,49 +412,48 @@ function displayPost(post) {
     mainArea.prepend(postCard);
 };
 
-function listReplies(repliesArr, postCard){
-    debugger
-    const mainThread = postCard.querySelector(`#main-thread-${postCard.dataset.id}`)
-    let filteredReplies = repliesArr.filter(reply => reply.post_id == postCard.dataset.id)
-    // debugger
-    filteredReplies.forEach(reply => {
-        let replyItem = document.createElement("div")
-        replyItem.classList.add("card")
-        replyItem.classList.add("p-5")
-        replyItem.classList.add("m-3")
-        replyItem.dataset.id = reply.id;
-        console.log(reply.user_id)
-        if (reply.user_id == localStorage.getItem("user_id")) {
-            replyItem.innerHTML = `
-            <div class="card-content">
-                <div id= "reply-content-${reply.id}" >
-                    ${reply.content} 
-                </div>
+function listOneReply(reply) {
+    let replyItem = document.createElement("div")
+    replyItem.classList.add("card")
+    replyItem.classList.add("p-5")
+    replyItem.classList.add("m-3")
+    replyItem.dataset.id = reply.id;
+    console.log(reply.user_id)
+    if (reply.user_id == localStorage.getItem("user_id")) {
+        replyItem.innerHTML = `
+        <div class="card-content">
+            <div id= "reply-content-${reply.id}" >
+                ${reply.content} 
             </div>
-            <footer class="card-footer">
-            <br>
-                <div class="content">
-                    @<a class ="is-link">${reply.replyname}</a>
-                    <button class = "button is-small is-light edit" id = "edit-reply-button">Edit</button>
-                </div>
-            </footer>`
-        } else {
-        replyItem.innerHTML = `<div class="card-content">
-                                    <div id= "reply-content-${reply.id}" >
-                                        ${reply.content} 
-                                    </div>
+        </div>
+        <footer class="card-footer">
+        <br>
+            <div class="content">
+                @<a class ="is-link">${reply.replyname}</a>
+                <button class = "button is-small is-light edit" id = "edit-reply-button">Edit</button>
+            </div>
+        </footer>`
+    } else {
+    replyItem.innerHTML = `<div class="card-content">
+                                <div id= "reply-content-${reply.id}" >
+                                    ${reply.content} 
                                 </div>
-                                <footer class="card-footer">
-                                <br>
-                                    <div class = "content">
-                                        <br>
-                                        @<a class ="is-link">${reply.replyname}</a>
-                                    </div>
-                                </footer>`
-        }
+                            </div>
+                            <footer class="card-footer">
+                            <br>
+                                <div class = "content">
+                                    <br>
+                                    @<a class ="is-link">${reply.replyname}</a>
+                                </div>
+                            </footer>`
+    }
+    const mainThread = document.querySelector(`#main-thread-${reply.post_id}`);
+    mainThread.append(replyItem)
+};
 
-        mainThread.append(replyItem)
-    })
+function listReplies(repliesArr, postCard){
+    let filteredReplies = repliesArr.filter(reply => reply.post_id == postCard.dataset.id)
+    filteredReplies.forEach(reply => listOneReply(reply))
 };
 
 function repliesFetch(postCard) {
@@ -566,7 +593,7 @@ buttonSignIn.addEventListener("click", event => {
 
 newUserForm.addEventListener("submit", event => {
     event.preventDefault()
-    debugger
+    // debugger
     const newUserData = {username: event.target.querySelector("#new-username").value,
                         email: event.target.querySelector("#new-email").value,
                         password: event.target.querySelector("#new-password").value,
@@ -607,7 +634,6 @@ newPostForm.addEventListener("submit", event =>{
                         view_replies: document.querySelector("#view-replies").checked,}
 
     console.log(newPostData)
-    displayPost(newPostData)
 
     scrollTop()
 
@@ -617,7 +643,8 @@ newPostForm.addEventListener("submit", event =>{
             'Content-Type': 'application/json',
         },
           body: JSON.stringify(newPostData),
-        })
+        }).then(res => res.json())
+        .then(post => displayPost(post))
     
     writeWindow.classList.remove("is-active")
 });
