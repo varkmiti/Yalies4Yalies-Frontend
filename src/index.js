@@ -120,7 +120,7 @@ mainArea.addEventListener("click", event => {
                                             content: postContent}
                         const interactionsData = {user_id: localStorage.getItem("user_id"), 
                                                     post_id: postId, 
-                                                    interaction: "like"}
+                                                    occured: "like"}
 
                         fetch(`${INTERACTIONS_URL}`, {
                             method: "POST",
@@ -152,8 +152,10 @@ mainArea.addEventListener("click", event => {
         
     } else if(event.target.parentNode.id == 'reply-window-button') {
         console.log(postId)
+        debugger
         replyWindow.classList.add("is-active")
-        newReply(postId)
+        newReply(postId)        
+
     } else if(event.target.id == 'edit-post-button') { 
         // debugger
         console.log(event.target.parentNode.parentElement.id)
@@ -237,13 +239,53 @@ function newReply(postId) {
                         body: JSON.stringify(newReplyData),
                     })
                 .then(res => console.log(newReplyData))
-    const allDisplayedPosts = document.querySelectorAll(".individual-post");
-    allDisplayedPosts.forEach(post => post.remove())
+    debugger
 
-    fetch(POSTS_URL)
-    .then(res => res.json())
-    .then(postArray => displayAllPosts(postArray));
+    const reply = fetch(REPLIES_URL).then(res => res.json()).then(repliesArray => repliesArray[-1])
+    debugger
+    const postMainThread = document.querySelector(`#main-thread-${postId}`)
+    let replyItem = document.createElement("div")
+    replyItem.classList.add("card")
+    replyItem.classList.add("p-5")
+    replyItem.classList.add("m-3")
+    replyItem.dataset.id = reply.id; 
+    if (reply.user_id == localStorage.getItem("user_id")) {
+        replyItem.innerHTML = `
+        <div class="card-content">
+            <div id= "reply-content-${reply.id}" >
+                ${reply.content} 
+            </div>
+        </div>
+        <footer class="card-footer">
+        <br>
+            <div class="content">
+                @<a class ="is-link">${reply.replyname}</a>
+                <button class = "button is-small is-light edit" id = "edit-reply-button">Edit</button>
+            </div>
+        </footer>`
+    } else {
+    replyItem.innerHTML = `<div class="card-content">
+                                <div id= "reply-content-${reply.id}" >
+                                    ${reply.content} 
+                                </div>
+                            </div>
+                            <footer class="card-footer">
+                            <br>
+                                <div class = "content">
+                                    <br>
+                                    @<a class ="is-link">${reply.replyname}</a>
+                                </div>
+                            </footer>`
+    }
+
+    postmainThread.append(replyItem)
 });
+// const allDisplayedPosts = document.querySelectorAll(".individual-post");
+//     allDisplayedPosts.forEach(post => post.remove())
+
+//     fetch(POSTS_URL)
+//     .then(res => res.json())
+//     .then(postArray => displayAllPosts(postArray));
 }
 
 // Display Functions
@@ -296,7 +338,7 @@ function displayPost(post) {
                         <div class = "content" id = "replies">
                             <br>
                             <h4>Replies</h3>
-                            <ul id= "main-thread">
+                            <ul class = "main-thread" id= "main-thread-${post.id}">
                             </ul>
                         </div>
                         </footer>
@@ -332,7 +374,7 @@ function displayPost(post) {
                         <div class = "content" id = "replies">
                             <br>
                             <h4>Replies</h3>
-                            <ul id= "main-thread">
+                            <ul id= "main-thread-${post.id}">
                             </ul>
                         </div>
                         </footer>
@@ -343,7 +385,8 @@ function displayPost(post) {
 };
 
 function listReplies(repliesArr, postCard){
-    const mainThread = postCard.querySelector("#main-thread")
+    debugger
+    const mainThread = postCard.querySelector(`#main-thread-${postCard.dataset.id}`)
     let filteredReplies = repliesArr.filter(reply => reply.post_id == postCard.dataset.id)
     // debugger
     filteredReplies.forEach(reply => {
